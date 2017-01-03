@@ -29,8 +29,6 @@
 //
 //  -------------------------------------------------------------------------
 
-
-
 void r3ball(Int_t nEvents = 1,
             TMap* fDetList = NULL,
             TString Target = "LeadTarget",
@@ -144,6 +142,9 @@ void r3ball(Int_t nEvents = 1,
   if (fDetList->FindObject("CRYSTALBALL") ) {
     //R3B Crystal Calorimeter
     R3BDetector* xball = new R3BXBall("XBall", kTRUE);
+    //enable the full hit level(s)
+    ((R3BXBall*)xball)->SelectCollectionOption( 2 ); //2 means do everything, for details
+                                                     //see R3BXBall.h
     xball->SetGeometryFileName(((TObjString*)fDetList->GetValue("CRYSTALBALL"))->GetString().Data());
     ((R3BXBall*)xball)->SelectCollectionOption(2);
     run->AddModule(xball);
@@ -320,7 +321,7 @@ void r3ball(Int_t nEvents = 1,
   }
   
   if (fGenerator.CompareTo("ascii") == 0  ) {
-    R3BAsciiGenerator* gen = new R3BAsciiGenerator((dir+"/input/"+InFile).Data());
+    R3BAsciiGenerator* gen = new R3BAsciiGenerator((/*dir+"/input/"+*/InFile).Data());
     primGen->AddGenerator(gen);
   }
   
@@ -408,6 +409,9 @@ void r3ball(Int_t nEvents = 1,
   rtdb->saveOutput();
   rtdb->print();
   
+  //flag out geant's verbosity
+  ((TGeant3*)gMC)->Gcflag()->itest = 1; //kill GTRIG output
+  ((TGeant3*)gMC)->Gcflag()->iswit[3] = 1; //kill ROOT_GTREV output
   
   // -----   Start run   ----------------------------------------------------
   if(nEvents > 0) {
@@ -430,4 +434,5 @@ void r3ball(Int_t nEvents = 1,
   
   cout << " Test passed" << endl;
   cout << " All ok " << endl;
+
 }

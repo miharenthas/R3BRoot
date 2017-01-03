@@ -258,7 +258,16 @@ void R3BAladinFieldMap::Init() {
   
 }
 
-void CalcFieldDiv(R3BFieldInterp f[3],double d[3])
+/********LINK-ability correction*********
+//Author: Lorenzo Zanetti, IKP - TU Darmstadt
+//Date: 15.12.2016
+//Comment: CalcFieldDiv was delcared as a member
+//         of class R3BAladinFieldMap but not
+//         implemented as a member itself (and
+//         it amazes me that it compiled).
+//         ADDED R3BAladinFieldMap:: prefix.
+****************************************/
+void R3BAladinFieldMap::CalcFieldDiv(R3BFieldInterp f[3],double d[3])
 {
   // Assume that the measurement values are at the same locations (not
   // completely true)

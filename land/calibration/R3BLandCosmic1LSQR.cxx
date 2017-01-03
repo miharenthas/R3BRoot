@@ -73,14 +73,21 @@
      /*  associated functions.                                        */
      /*                                                               */
      /*---------------------------------------------------------------*/
-/*
-void lsqr_error( char  *msg,
+/********LINK-ability correction*********
+//Author: Lorenzo Zanetti, IKP - TU Darmstadt
+//Date: 15.12.2016
+//Comment: lsqr_error is defined and referenced
+//         multiple times, but its implementation
+//         was commented out.
+//         REINSTATED (what was the matter anyway?).
+****************************************/
+void lsqr_error( const char  *msg,
                  int   code  )
 {
   fprintf(stderr, "\t%s\n", msg);
   exit(code);
 }
-*/
+
      /*---------------------------------------------------------------*/
      /*                                                               */
      /*  Define the allocation function for a long vector with        */

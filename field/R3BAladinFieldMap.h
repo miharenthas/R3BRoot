@@ -154,7 +154,15 @@ public:
   /** Accessor to field map file **/
   const char* GetFileName() { return fFileName.Data(); }
 
-
+/********LINK-ability correction*********
+//Author: Lorenzo Zanetti, IKP - TU Darmstadt
+//Date: 15.12.2016
+//Comment: CalcFieldDiv was delcared as a member
+//         of class R3BAladinFieldMap but not
+//         implemented as a member itself (and
+//         it amazes me that it compiled).
+//         ADDED R3BAladinFieldMap:: prefix.
+****************************************/
   void CalcFieldDiv(R3BFieldInterp f[3],Double_t d[3]);
 
 

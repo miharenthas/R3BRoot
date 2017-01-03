@@ -22,7 +22,7 @@
 #include "globals.hh"
 
 class R3BPhysicsListMessenger;
-class G4StepLimiterPhysics;
+class G4StepLimiterBuilder;
 
 class R3BPhysicsList: public G4VModularPhysicsList {
 private:
@@ -39,7 +39,7 @@ private:
   G4bool   gnucIsRegisted;
   
   R3BPhysicsListMessenger* pMessenger;
-  G4StepLimiterPhysics* steplimiter;
+  G4StepLimiterBuilder* steplimiter;
   
 public:
   R3BPhysicsList();

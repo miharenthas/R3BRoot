@@ -14,9 +14,6 @@ class R3BRunConfiguration : public TG4RunConfiguration
 
     // methods
     virtual G4VUserPhysicsList*  CreatePhysicsList();
-
-  ClassDef(R3BRunConfiguration, 1)
-
 };
 
 #endif //R3BRUNCONFIGURATION_H

@@ -369,7 +369,14 @@ typedef struct LSQR_FUNC {
 /*---------------------*/
 /* Function prototypes */
 /*---------------------*/
-
+/********LINK-ability correction*********
+//Author: Lorenzo Zanetti, IKP - TU Darmstadt
+//Date: 15.12.2016
+//Comment: lsqr_error is defined and referenced
+//         multiple times, but its implementation
+//         was commented out.
+//         REINSTATED (what was the matter anyway?).
+****************************************/
 void lsqr_error( const char *, int );
 
 lvec *alloc_lvec( long );

@@ -10,11 +10,18 @@
 #include <LHEP_BERT.hh>
 #endif
 #include "R3BPhysicsList.h"
-
 #include <QGSP_INCLXX.hh>
 
-
-ClassImp(R3BRunConfiguration)
+/********LINK-ability correction*********
+//author: Lorenzo Zanetti
+//date: 20.12.2016
+//comment: apparently, the following line
+//         was messing with dictionaries
+//         generation. REMOVED (because
+//         it seems that the whole file
+//         was removed in upstream)
+****************************************/
+//ClassImp(R3BRunConfiguration)
 
 //_____________________________________________________________________________
 R3BRunConfiguration::R3BRunConfiguration(const TString& userGeometry,
