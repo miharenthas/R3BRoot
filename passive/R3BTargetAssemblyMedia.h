@@ -17,7 +17,7 @@
 //ROOT includes
 #include "TGeoManager.h"
 #include "TGeoMedium.h"
-#include "TGeoMixture.h"
+#include "TGeoMaterial.h"
 
 //stl includes
 #include <string.h> //memset
@@ -30,14 +30,15 @@ class R3BTargetAssemblyMedia {
 	
 		//collection of methods that will
 		//return the needed medium
-		static TGeoMedium Air(); //returns air
-		static TGeoMedium Vacuum(); //returns a common cranium's content...
-		static TGeoMedium Silicon(); //returns silicon
-		static TGeoMedium Copper(); //returns copper
-		static TGeoMedium Aluminium(); //returns Aluminium, since we're in Europe
-		static TGeoMedium Iron(); //returns irom
-		static TGeoMedium Lead(); //returns -Zeppelin
-		static TGeoMedium Fiberglass(); //returns the stuff glass fibers are made of
+		static TGeoMedium *Air(); //returns air
+		static TGeoMedium *Vacuum(); //returns a common cranium's content...
+		static TGeoMedium *Silicon(); //returns silicon
+		static TGeoMedium *Copper(); //returns copper
+		static TGeoMedium *Aluminium(); //returns Aluminium, since we're in Europe
+		static TGeoMedium *Iron(); //returns irom
+		static TGeoMedium *Lead(); //returns -Zeppelin
+
+		ClassDef( R3BTargetAssemblyMedia, 1 )
 };
 
 //this is a shorthand, since the typename is rather long

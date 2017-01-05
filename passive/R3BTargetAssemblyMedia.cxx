@@ -9,7 +9,7 @@
 
 //------------------------------------------------------------------------------------
 //static method in charge of making air
-static TGeoMedium *R3BTAM::Air(){
+TGeoMedium *R3BTAM::Air(){
 	//holders for:
 	//mass number, charge number, something
 	//density, something else, something more.
@@ -36,15 +36,13 @@ static TGeoMedium *R3BTAM::Air(){
 		air = new TGeoMedium( "Air", numed, pMat2, par );
 	}
 	
-	//add the newly created material to the pointer vector
 	//and return it
-	R3BTAM::CreatedMedia.push_back( air );
 	return air;
 }
 
 //------------------------------------------------------------------------------------
 //static method in charge of the skull's content...
-static TGeoMedium *R3BTAM::Vacuum(){
+TGeoMedium *R3BTAM::Vacuum(){
 	//holders for:
 	//mass number, charge number, something
 	//density, something else, something more.
@@ -68,18 +66,16 @@ static TGeoMedium *R3BTAM::Vacuum(){
 		//medium: Vacuuuuuuuuuum
 		numed   = 1;  // medium number
 		memset( par, 0, 20*sizeof(double) );
-		pMedVac = new TGeoMedium( "Vacuum", numed, pMat33, par );
+		vacuum = new TGeoMedium( "Vacuum", numed, pMat33, par );
 	}
 	
-	//add the newly created material to the pointer vector
 	//and return it
-	R3BTAM::CreatedMedia.push_back( vacuum );
 	return vacuum;
 }
 
 //------------------------------------------------------------------------------------
 //static method in charge of creating sililcon
-static TGeoMedium *R3BTAM::Silicon(){
+TGeoMedium *R3BTAM::Silicon(){
 	//holders for:
 	//mass number, charge number, something
 	//density, something else, something more.
@@ -115,15 +111,13 @@ static TGeoMedium *R3BTAM::Silicon(){
 		pMedSi = new TGeoMedium( "Silicon", numed, pMat22, par );
 	}
 	
-	//add the newly created material to the pointer vector
 	//and return it
-	R3BTAM::CreatedMedia.push_back( pMedSi );
 	return pMedSi;
 }
 
 //------------------------------------------------------------------------------------
 //static method in charge of creating copper
-static TGeoMedium *R3BTAM::Copper(){
+TGeoMedium *R3BTAM::Copper(){
 	//holders for:
 	//mass number, charge number, something
 	//density, something else, something more.
@@ -157,15 +151,13 @@ static TGeoMedium *R3BTAM::Copper(){
 		pMedCu = new TGeoMedium( "Copper", numed, pMat25, par );
 	}
 	
-	//add the newly created material to the pointer vector
 	//and return it
-	R3BTAM::CreatedMedia.push_back( pMedCu );
 	return pMedCu;
 }
 
 //------------------------------------------------------------------------------------
 //static method in charge of creating alluminium
-static TGeoMedium *R3BTAM::Aluminium(){
+TGeoMedium *R3BTAM::Aluminium(){
 	//holders for:
 	//mass number, charge number, something
 	//density, something else, something more.
@@ -199,9 +191,7 @@ static TGeoMedium *R3BTAM::Aluminium(){
 		pMedAl = new TGeoMedium("Aluminum", numed,pMat21, par);
 	}
 	
-	//add the newly created material to the pointer vector
 	//and return it
-	R3BTAM::CreatedMedia.push_back( pMedAl );
 	return pMedAl;
 }
 
@@ -237,9 +227,7 @@ TGeoMedium *R3BTAM::Iron(){
 		pMedFe = new TGeoMedium("Iron", numed,pMatFe, par);
 	}
 	
-	//add the newly created material to the pointer vector
 	//and return it
-	R3BTAM::CreatedMedia.push_back( pMedFe );
 	return pMedFe;
 }
 
@@ -273,8 +261,8 @@ TGeoMedium *R3BTAM::Lead(){
 		pMedPb = new TGeoMedium("Lead", numed, pMatPb, par);
 	}
 	
-	//add the newly created material to the pointer vector
 	//and return it
-	R3BTAM::CreatedMedia.push_back( pMedPb );
 	return pMedPb;
 }
+
+ClassImp( R3BTargetAssemblyMedia )

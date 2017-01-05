@@ -35,7 +35,10 @@ R3BGladMagnet.cxx
 R3BPassiveContFact.cxx
 R3BPipe.cxx           
 R3BVacVesselCool.cxx           
-R3BTarget.cxx 
+R3BTarget.cxx
+R3BTargetWheel.cxx
+R3BTargetShielding.cxx
+R3BTargetAssemblyMedia.cxx 
 )
 
 # fill list of header files from list of source files

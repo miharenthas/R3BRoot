@@ -116,6 +116,20 @@ void r3ball(Int_t nEvents = 1,
     run->AddModule(target);
   }
   
+  //R3B Target WHEEL definition
+  if (fDetList->FindObject("TARGETWHEEL") ) {
+    R3BModule* target_wheel= new R3BTargetWheel( "thewheel" );
+    //target_wheel->SetGeometryFileName(((TObjString*)fDetList->GetValue("TARGET"))->GetString().Data());
+    run->AddModule(target_wheel);
+  }
+  
+  //R3B Target SHIELDING definition
+  if (fDetList->FindObject("TARGETSHIELDING") ) {
+    R3BModule* target_shielding= new R3BTargetShielding( "theshield" );
+    //target_shielding->SetGeometryFileName(((TObjString*)fDetList->GetValue("TARGET"))->GetString().Data());
+    run->AddModule(target_shielding);
+  }
+
   //R3B SiTracker Cooling definition
   if (fDetList->FindObject("VACVESSELCOOL") ) {
     R3BModule* vesselcool= new R3BVacVesselCool(Target.Data());
