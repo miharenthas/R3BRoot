@@ -38,6 +38,7 @@ R3BVacVesselCool.cxx
 R3BTarget.cxx
 R3BTargetWheel.cxx
 R3BTargetShielding.cxx
+R3BTargetAtmosphere.cxx
 R3BTargetAssemblyMedia.cxx 
 )
 

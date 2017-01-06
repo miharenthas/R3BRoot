@@ -11,6 +11,7 @@
 #pragma link C++ class  R3BTarget+;
 #pragma link C++ class  R3BTargetWheel+;
 #pragma link C++ class  R3BTargetShielding+;
+#pragma link C++ class  R3BTargetAtmosphere+;
 #pragma link C++ class  R3BTargetAssemblyMedia+;
 #pragma link C++ class  R3BPipe+;
 #pragma link C++ class  R3BVacVesselCool+;

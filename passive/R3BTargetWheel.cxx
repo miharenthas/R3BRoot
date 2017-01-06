@@ -206,12 +206,22 @@ void R3BTargetWheel::ConstructGeometry(){
 	tw_assembly->AddNode( pMontageRingLog, 1, pMatrix16 );
 	tw_assembly->AddNode( pMontagePlatformLog, 1, pMatrix14 );
 	
-	//lastly, register the assembly
-	//get the top shape of the wolrd (basically, the cave)
-	TGeoVolume *pWorld = gGeoManager->GetTopVolume();
-	pWorld->SetVisLeaves( kTRUE );
+	tw_assembly->SetVisLeaves( kTRUE );
 	
-	pWorld->AddNode( tw_assembly, 1, GetGlobalPosition( tZero ) );
+	//lastly, register the assembly
+	//get the top shape of the wolrd (the cave or the target atmosphere, if defined)
+	TGeoVolume *pChamber = gGeoManager->GetVolume( "reaction_chamber_log" );
+	if( !pChamber ){
+		R3BTargetAtmosphere atm( "target_atmosphere",
+		                         "R3BTargetAtmosphere",
+		                         R3BTargetAtmosphere::VACUUM );
+		atm.ConstructGeometry();
+		pChamber = gGeoManager->GetVolume( "reaction_chamber_log" );
+
+	}
+	pChamber->SetVisLeaves( kTRUE );
+	
+	pChamber->AddNode( tw_assembly, 1, GetGlobalPosition( tZero ) );
 }
 
 ClassImp( R3BTargetWheel )

@@ -29,6 +29,7 @@
 //R3BRoot includes
 #include "R3BModule.h"
 #include "R3BTargetAssemblyMedia.h" //for the necessary media
+#include "R3BTargetAtmosphere.h" //for MakeGeometry()
 
 //stl includes
 #include <string>
@@ -43,6 +44,16 @@ class R3BTargetShielding : public R3BModule {
 		
 		//a method that will construct AND REGISTER
 		//the geometry of the thing
+		//NOTE: since this class will try to register first to "reaction_chamber"
+		//      which contains the information on the reaction chamber filling
+		//      it is adviesable to instantiate this AFTER the atmosphere, in order
+		//      to construct the correct hierarchy:
+		//      R3BTargetAtmosphere{
+		//          R3BTargetShielding
+		//          R3BTargetWheel
+		//      }
+		//      if the atmosphere isn't instantiated yet, a vacuum filling
+		//      is added (and no further atmospheres are created!)
 		virtual void ConstructGeometry();
 
 		//some gobbins

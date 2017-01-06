@@ -194,11 +194,21 @@ void R3BTargetShielding::ConstructGeometry(){
 	target_shielding->AddNode( leadShieldingLog, 1, pMatrix101 );
 	target_shielding->AddNode( copperShieldingLog, 1, pMatrix101 );
 	
-	//get the top shape of the wolrd (basically, the cave)
-	TGeoVolume *pWorld = gGeoManager->GetTopVolume();
-	pWorld->SetVisLeaves( kTRUE );
+	//lastly, register the assembly
+	//get the top shape of the wolrd (the cave or the target atmosphere, if defined)
+	TGeoVolume *pChamber = gGeoManager->GetVolume( "reaction_chamber_log" );
+	if( !pChamber ){
+		R3BTargetAtmosphere atm( "target_atmosphere",
+		                         "R3BTargetAtmosphere",
+		                         R3BTargetAtmosphere::VACUUM );
+		atm.ConstructGeometry();
+		pChamber = gGeoManager->GetVolume( "reaction_chamber_log" );
+
+	}
+	pChamber->SetVisLeaves( kTRUE );
 	
-	pWorld->AddNode( target_shielding, 1, GetGlobalPosition( tZero ) );
+	pChamber->AddNode( target_shielding, 1, GetGlobalPosition( tZero ) );
+
 }
 
 ClassImp( R3BTargetShielding )
