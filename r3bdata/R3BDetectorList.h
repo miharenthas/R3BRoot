@@ -27,7 +27,8 @@ enum DetectorId
     kLUMON,
     kNEULAND,
     kACTAR,
-    kLAST
+    kLAST,
+    kRATTLEPLANE
 };
 
 /** Unique identifier for all R3B Point and Hit types **/

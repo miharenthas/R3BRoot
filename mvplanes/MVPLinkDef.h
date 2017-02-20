@@ -5,6 +5,6 @@
 #pragma link off all functions;
 
 #pragma link C++ class	R3BRattlePlane+;
-#pragma link C++ class	R3BRPhit+;
+#pragma link C++ class	R3BRPHit+;
 
 #endif

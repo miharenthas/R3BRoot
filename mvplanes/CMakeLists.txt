@@ -8,7 +8,8 @@ ${BASE_INCLUDE_DIRECTORIES}
 )
 
 set(INCLUDE_DIRECTORIES
-${R3BROOT_SOURCE_DIR}/r3bbase  
+${R3BROOT_SOURCE_DIR}/r3bbase
+${R3BROOT_SOURCE_DIR}/r3bdata  
 ${R3BROOT_SOURCE_DIR}/mvplanes  )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -27,16 +28,18 @@ R3BRattlePlane.cxx
 
 # fill list of header files from list of source files
 # by exchanging the file extension
-CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
+# CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
 
 set(HEADERS
-${HEADERS}
 R3BRPHit.h
+R3BRattlePlane.h
 )
 
-Set(LINKDEF PassiveLinkDef.h)
+# this doesn't seem to work on the first go...
+# Set(LINKDEF MVPLinkDef.h)
 Set(LIBRARY_NAME R3BMVPlanes) 
 Set(DEPENDENCIES
-    R3Bbase)
+    R3Bbase
+    R3BData)
 
 GENERATE_LIBRARY()

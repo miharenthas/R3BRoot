@@ -20,21 +20,26 @@
 #define R3BRATTLEPLANE__H
 
 //define a constant for the detector ID
-#define RATTLEPLANE_DETECTOR_ID 999
+#define RATTLEPLANE_DETECTOR_ID kRATTLEPLANE
 
 //define a constant for the thickness of the plane (in centimeters)
 //and also it's default side.
 #define RATTLEPLANE_THICKNESS 50
 #define RATTLEPLANE_SIDE 3000
 
+#include <string>
+
 #include "TClonesArray.h"
 #include "TLorentzVector.h"
 #include "TGeoMatrix.h"
-#include "TGeoBox.h"
+#include "TGeoBBox.h"
+#include "TVirtualMC.h" //for gMC
+#include "TGeoManager.h" //for gGeoManager
 
 #include "FairLogger.h"
 #include "FairRootManager.h"
 
+#include "R3BMCStack.h" //for R3BStack
 #include "R3BDetector.h" //parent class
 #include "R3BRPHit.h" //the rattle of the rattle plane
 
@@ -54,9 +59,8 @@ class R3BRattlePlane : public R3BDetector {
 		// -- name: a string to name the thing. "Nebuchadnezzar" is the default.
 		// -- active: a flag to switch on and off the detector.
 		// -- trf: ...
-		explicit R3BRattlePlane( const char *the_name = "Nebuchadnezzar",
-		                         bool active = true,
-		                         rp_trf trf = { 0, 0, 0, 0, 0, 0 } );
+		explicit R3BRattlePlane( rp_trf trf, const char *the_name = "Nebuchadnezzar",
+		                         bool active = true );
 		R3BRattlePlane( const R3BRattlePlane &given ); //since we are burly programmers,
 		                                               //this will support copy construction.
 		virtual ~R3BRattlePlane(){ --R3BRattlePlane::nb_rattle_planes; };
@@ -80,13 +84,16 @@ class R3BRattlePlane : public R3BDetector {
 	protected: //i'm actually expecting to derive single neuLAND planes from this,
 	           //because of bone-eyed lazyness. Stay tuned.
 		TClonesArray _rattle_hits;
+		rp_trf _trf; //the transformation
+		std::string _name; //keep track of the name
+		TGeoBBox *_rp; //the rattle plane's box
+		TGeoVolume *_rp_volume; //the volume of the rattleplane
 		
+		int _rp_rank; //this plane's serial number
 		static int nb_rattle_planes; //keep track of how many rattleplanes we have.
-		
-		rp_trf _trf;
 
 		//interpreter garbage
-		ClassDef( R3BRattlePlane )
+		ClassDef( R3BRattlePlane, 0 )
 };
 
 #endif
