@@ -14,15 +14,30 @@
 //      FairMCPoint (?), but it is a structure, really.
 *******************************************************/
 
+#ifndef R3BRPHIT__H
+#define R3BRPHIT__H	
+
 #include "TLorentzVector.h"
 
 #include "FairMCPoint.h"
 
 class R3BRPHit : public FairMCPoint {
 	public:
+		R3BRPHit():
+			_e_loss( 0 ),
+			_toa( 0 ),
+			_tod( 0 ),
+			_track_id( 0 ),
+			_parent_id( 0 ) {};
+		virtual ~R3BRPHit(){};
+	
 		double _e_loss;
 		double _toa, _tod; //time of arrival and departure
 		int _track_id, _parent_id; //hierarchy info
 		TLorentzVector _poe, _pod; //position of arrival and departure
 		TLorentzVector _mae, _mad; //moment at arrival and departure
+		
+		ClassDef( R3BRPHit, 1 );
 };
+
+#endif

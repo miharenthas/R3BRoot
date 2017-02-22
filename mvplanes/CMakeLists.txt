@@ -22,6 +22,13 @@ ${FAIRROOT_LIBRARY_DIR}
  
 link_directories( ${LINK_DIRECTORIES})
 
+# this doesn't seem to work on the first go...
+Set(LINKDEF MVPLinkDef.h)
+Set(LIBRARY_NAME R3BMVPlanes) 
+Set(DEPENDENCIES
+    R3Bbase
+    R3BData)
+
 set(SRCS
 R3BRattlePlane.cxx 
 )
@@ -34,12 +41,5 @@ set(HEADERS
 R3BRPHit.h
 R3BRattlePlane.h
 )
-
-# this doesn't seem to work on the first go...
-# Set(LINKDEF MVPLinkDef.h)
-Set(LIBRARY_NAME R3BMVPlanes) 
-Set(DEPENDENCIES
-    R3Bbase
-    R3BData)
 
 GENERATE_LIBRARY()

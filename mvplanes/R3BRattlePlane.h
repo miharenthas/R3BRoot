@@ -59,28 +59,26 @@ class R3BRattlePlane : public R3BDetector {
 		// -- name: a string to name the thing. "Nebuchadnezzar" is the default.
 		// -- active: a flag to switch on and off the detector.
 		// -- trf: ...
-		explicit R3BRattlePlane( rp_trf trf, const char *the_name = "Nebuchadnezzar",
-		                         bool active = true );
-		R3BRattlePlane( const R3BRattlePlane &given ); //since we are burly programmers,
-		                                               //this will support copy construction.
-		virtual ~R3BRattlePlane(){ --R3BRattlePlane::nb_rattle_planes; };
+		R3BRattlePlane( rp_trf trf, const char *the_name, bool active );
 		
-		//and, sure enough, we also do an assignment operator, shall we?
-		R3BRattlePlane &operator=( R3BRattlePlane &right );
+		virtual ~R3BRattlePlane(){};
 		
 		//implementation of the various abstract method of the parent class
 		virtual void Initialize();
-		virtual Bool_t ProcessHit( FairVolume *fair_vol = NULL );
+		virtual Bool_t ProcessHits( FairVolume *fair_vol = NULL );
 		virtual void EndOfEvent() { /*do nothing*/ };
 		virtual void Register();
-		virtual TClonesArray *GetCollection( Int_t iColl ); //retrieve the data
-		                                                    // -- iColl: ???
+		virtual TClonesArray *GetCollection( Int_t iColl ) const; //retrieve the data
+		                                                          // -- iColl: ???
 		virtual void Print( Option_t *opt = "" ){ /*oh please*/ };
 		virtual void Reset();
 		virtual void ConstructGeometry(); //A very important method this one: the geometry
 		                                  //of the detector is made in here and it's the
 		                                  //whole point of this tatty class.
 		virtual void PostTrack(){ /*do nothing*/ }; // ???
+
+		//interpreter garbage
+		ClassDef( R3BRattlePlane, 1 );
 	protected: //i'm actually expecting to derive single neuLAND planes from this,
 	           //because of bone-eyed lazyness. Stay tuned.
 		TClonesArray _rattle_hits;
@@ -88,12 +86,11 @@ class R3BRattlePlane : public R3BDetector {
 		std::string _name; //keep track of the name
 		TGeoBBox *_rp; //the rattle plane's box
 		TGeoVolume *_rp_volume; //the volume of the rattleplane
-		
-		int _rp_rank; //this plane's serial number
-		static int nb_rattle_planes; //keep track of how many rattleplanes we have.
-
-		//interpreter garbage
-		ClassDef( R3BRattlePlane, 0 )
+	private:
+		R3BRattlePlane( const R3BRattlePlane &given ); //since we are burly programmers,
+		                                               //this will support copy construction.
+		//and, sure enough, we also do an assignment operator, shall we?
+		R3BRattlePlane &operator=( R3BRattlePlane &right );
 };
 
 #endif

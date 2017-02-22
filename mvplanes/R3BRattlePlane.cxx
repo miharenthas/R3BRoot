@@ -13,25 +13,18 @@
 //------------------------------------------------------------------------------------
 //default:
 R3BRattlePlane::R3BRattlePlane():
-	R3BDetector(  "Nebuchadnezzar", true, RATTLEPLANE_DETECTOR_ID ),
-	_rattle_hits( "R3BRPHits" )
-{
-	_rp_rank = R3BRattlePlane::nb_rattle_planes;
-	++R3BRattlePlane::nb_rattle_planes;
-}
+	R3BDetector( "Nebuchadnezzar", true, RATTLEPLANE_DETECTOR_ID ),
+	_rattle_hits( "R3BRPHit" )
+{;}
 
 //------------------------------------------------------------------------------------
 //parametric:
 R3BRattlePlane::R3BRattlePlane( rp_trf trf, const char *the_name, bool active ):
 	R3BDetector( the_name, active, RATTLEPLANE_DETECTOR_ID ),
-	_rattle_hits( "R3BRPHits" )
+	_rattle_hits( "R3BRPHit" )
 {
 	//copy the given transformation
 	_trf = trf;
-	
-	//and increment the count of rattle planes
-	_rp_rank = R3BRattlePlane::nb_rattle_planes;
-	++R3BRattlePlane::nb_rattle_planes;
 }
 
 //------------------------------------------------------------------------------------
@@ -40,9 +33,6 @@ R3BRattlePlane::R3BRattlePlane( const R3BRattlePlane &given ):
 	R3BDetector( given._name.c_str(), true, RATTLEPLANE_DETECTOR_ID ),
 	_rattle_hits( given._rattle_hits )
 {
-	_rp_rank = given._rp_rank +1;
-	++R3BRattlePlane::nb_rattle_planes;
-	
 	_trf = given._trf;
 }
 
@@ -74,7 +64,7 @@ void R3BRattlePlane::Initialize(){
 //------------------------------------------------------------------------------------
 //ProcessHit method: does the thing necessary when the plane is stroke by a particle.
 //To the best of my understanding, this gets called by the FairRunSim thingie.
-Bool_t R3BRattlePlane::ProcessHit( FairVolume *the_volume ){
+Bool_t R3BRattlePlane::ProcessHits( FairVolume *the_volume ){
 	//if the track is entering, set the data
 	//which is what we are actually interested in.
 	R3BRPHit *current_hit;
@@ -82,7 +72,6 @@ Bool_t R3BRattlePlane::ProcessHit( FairVolume *the_volume ){
 		//create a new hit at the end of the hit array and
 		//set our handy pointer to it.
 		current_hit = new R3BRPHit;
-		_rattle_hits.AddLast( current_hit );
 		
 		current_hit->_e_loss = 0; //init the energy loss into the rattleplane
 		current_hit->_toa = gMC->TrackTime(); //time of arrival
@@ -93,6 +82,8 @@ Bool_t R3BRattlePlane::ProcessHit( FairVolume *the_volume ){
 		current_hit->_track_id = gMC->GetStack()->GetCurrentTrackNumber();
 		current_hit->_parent_id = gMC->GetStack()->GetCurrentParentTrackNumber();
 
+		//add the new hit
+		_rattle_hits.AddLast( current_hit );
 	//else if the track is leaving the rattle plane, or is dead in it
 	} else if( gMC->IsTrackExiting() || gMC->IsTrackStop() || gMC->IsTrackDisappeared() ) {
 		current_hit = (R3BRPHit*)_rattle_hits[ _rattle_hits.GetLast() ];
@@ -108,7 +99,6 @@ Bool_t R3BRattlePlane::ProcessHit( FairVolume *the_volume ){
 		
 		current_hit->_e_loss += gMC->Edep();
 	}
-	
 	return kTRUE;
 }
 
@@ -116,7 +106,7 @@ Bool_t R3BRattlePlane::ProcessHit( FairVolume *the_volume ){
 //Register: make the FairRootManager aware that we exist
 void R3BRattlePlane::Register() {
 	//Just this...
-	FairRootManager::Instance()->Register( "Rattles", GetName(), &_rattle_hits, true );
+	//FairRootManager::Instance()->Register( "Rattles", GetName(), &_rattle_hits, true );
 }
 
 //------------------------------------------------------------------------------------
@@ -126,9 +116,8 @@ void R3BRattlePlane::Register() {
 //NOTE: this will actually copy the elements of the array, which is a different behavior
 //      than what I've seen around. If the deallocation doesn't happen elsewhere, then
 //      this will lead to a memory leak. Will check on it and add facilities to remedy.
-TClonesArray *R3BRattlePlane::GetCollection( Int_t iColl ){
-	if( !iColl ) return new TClonesArray( _rattle_hits );
-	return NULL;
+TClonesArray *R3BRattlePlane::GetCollection( Int_t iColl ) const {
+	return new TClonesArray( _rattle_hits );
 }
 
 //------------------------------------------------------------------------------------
@@ -162,26 +151,29 @@ void R3BRattlePlane::ConstructGeometry(){
 	//create the medium
 	//and it kinda had to be it, really...
 	double par[20] = { 0, 0, 0, 0, 0, 0, 1e-4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	TGeoMedium *p_med_Ds = NULL;
-	if( gGeoManager->GetMedium( "Darmstadtium" ) ){
-		p_med_Ds = gGeoManager->GetMedium( "Darmstadtium" );
+	TGeoMedium *p_med_Pu = NULL;
+	if( gGeoManager->GetMedium( "Plutonum" ) ){
+		p_med_Pu = gGeoManager->GetMedium( "Plutonium" );
 	} else {
-		TGeoMaterial *Ds = new TGeoMaterial( "Darmstadtium",
-		                                     281.,
-		                                     110.,
-		                                     34.8 );
-		Ds->SetIndex( 999 );
-		p_med_Ds = new TGeoMedium( "Darmstadtium", 999, Ds, par );
+		TGeoMaterial *Pu = new TGeoMaterial( "Plutonium",
+		                                     244.,
+		                                     93.,
+		                                     19.816 );
+		Pu->SetIndex( 999 );
+		p_med_Pu = new TGeoMedium( "Plutonium", 999, Pu, par );
 	}
 	
 	//finally, make the volume                             
-	_rp_volume = new TGeoVolume( "Woodrow_volume", _rp, p_med_Ds );
+	_rp_volume = new TGeoVolume( "Woodrow_volume", _rp, p_med_Pu );
 	
 	//register it in the wolrd
-	TGeoCombiTrans tZero;
+	TGeoRotation *zeroRot = new TGeoRotation; //zero rotation
+	TGeoCombiTrans *tZero = new TGeoCombiTrans( "tZero", 0., 0., 0., zeroRot );
 	TGeoVolume *p_world = gGeoManager->GetTopVolume();
-	p_world->AddNode( _rp_volume, 1, GetGlobalPosition( &tZero ) );
+	p_world->SetVisLeaves( kTRUE );
+
+	p_world->AddNode( _rp_volume, 1, GetGlobalPosition( tZero ) );
 }
 
 //interpreter garbage
-ClassImp( R3BRattlePlane )
+ClassImp( R3BRattlePlane );
