@@ -30,16 +30,12 @@ Set(DEPENDENCIES
     R3BData)
 
 set(SRCS
-R3BRattlePlane.cxx 
+R3BRattlePlane.cxx
+R3BRPHit.cxx 
 )
 
 # fill list of header files from list of source files
 # by exchanging the file extension
-# CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
-
-set(HEADERS
-R3BRPHit.h
-R3BRattlePlane.h
-)
+CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
 
 GENERATE_LIBRARY()

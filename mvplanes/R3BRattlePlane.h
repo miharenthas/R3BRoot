@@ -22,11 +22,6 @@
 //define a constant for the detector ID
 #define RATTLEPLANE_DETECTOR_ID kRATTLEPLANE
 
-//define a constant for the thickness of the plane (in centimeters)
-//and also it's default side.
-#define RATTLEPLANE_THICKNESS 50
-#define RATTLEPLANE_SIDE 3000
-
 #include <string>
 
 #include "TClonesArray.h"
@@ -46,10 +41,11 @@
 class R3BRattlePlane : public R3BDetector {
 	public:
 		//a handy structure to pass the information of the transformation
-		typedef struct _r3brattleplane_transformation {
+		typedef struct _r3brattleplane_specifications {
 			double rot_x, rot_y, rot_z;
 			double T_x, T_y, T_z;
-		} rp_trf;
+			double width, height, depth;
+		} rp_specs;
 
 		//ctors, dtor.
 		//As mentioned above, if not default constructed, this class
@@ -59,7 +55,7 @@ class R3BRattlePlane : public R3BDetector {
 		// -- name: a string to name the thing. "Nebuchadnezzar" is the default.
 		// -- active: a flag to switch on and off the detector.
 		// -- trf: ...
-		R3BRattlePlane( rp_trf trf, const char *the_name, bool active );
+		R3BRattlePlane( rp_specs &specs, const char *the_name, bool active );
 		
 		virtual ~R3BRattlePlane(){};
 		
@@ -75,17 +71,20 @@ class R3BRattlePlane : public R3BDetector {
 		virtual void ConstructGeometry(); //A very important method this one: the geometry
 		                                  //of the detector is made in here and it's the
 		                                  //whole point of this tatty class.
-		virtual void PostTrack(){ /*do nothing*/ }; // ???
+		//virtual void PostTrack(); //???
+		virtual Bool_t CheckIfSensitive( std::string ){ return kTRUE; }; //it is sensitive
 
 		//interpreter garbage
 		ClassDef( R3BRattlePlane, 1 );
 	protected: //i'm actually expecting to derive single neuLAND planes from this,
 	           //because of bone-eyed lazyness. Stay tuned.
-		TClonesArray _rattle_hits;
-		rp_trf _trf; //the transformation
+		TClonesArray *_rattle_hits; //it's a container for the event passing
+		std::vector<R3BRPHit*> _hits; //the SANE container for the hits.
+		rp_specs _specs; //the specs
 		std::string _name; //keep track of the name
-		TGeoBBox *_rp; //the rattle plane's box
-		TGeoVolume *_rp_volume; //the volume of the rattleplane
+
+		//event awareness
+		bool _is_new_event; //new event toggle (useful)
 	private:
 		R3BRattlePlane( const R3BRattlePlane &given ); //since we are burly programmers,
 		                                               //this will support copy construction.
