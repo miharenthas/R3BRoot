@@ -300,6 +300,17 @@ void R3BStack::UpdateTrackIndex(TRefArray* detList) {
       for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
         FairMCPoint* point = (FairMCPoint*)hitArray->At(iPoint);
         Int_t iTrack = point->GetTrackID();
+
+	//Apparently, some particles are marked as not saveable (iTrack = -2)
+	//and then no action is taken, letting the program fail.
+	//This corrects it.
+	//NOTE: this mod has been done by l.zanetti@ikp.tu-darmstadt.de
+	//      on 24.02.2017 at 00:43.
+	if( iTrack == -2 ){
+		LOG(WARNING) << "R3BStack: A particle was marked for deletion... "
+		             << "Skipping." << FairLogger::endl;
+		continue;
+	}
         
         LOG(DEBUG) << "R3BMCStack TrackID Get : " << iTrack << FairLogger::endl;
         
