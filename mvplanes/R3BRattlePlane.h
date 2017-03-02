@@ -24,6 +24,10 @@
 
 #include <string>
 
+//unique name generation
+#include <stdlib.h>
+#include <string.h>
+
 #include "TClonesArray.h"
 #include "TLorentzVector.h"
 #include "TGeoMatrix.h"
@@ -37,6 +41,9 @@
 #include "R3BMCStack.h" //for R3BStack
 #include "R3BDetector.h" //parent class
 #include "R3BRPHit.h" //the rattle of the rattle plane
+#include "R3BTargetAssemblyMedia.h" //This is here to provide materials, even
+                                    //if this is not strictly its intended
+                                    //application. Still, should work.
 
 class R3BRattlePlane : public R3BDetector {
 	public:
@@ -45,6 +52,7 @@ class R3BRattlePlane : public R3BDetector {
 			double rot_x, rot_y, rot_z;
 			double T_x, T_y, T_z;
 			double width, height, depth;
+			R3BTAM_switcher stuff; //the material, wide character friednly
 		} rp_specs;
 
 		//ctors, dtor.
@@ -52,9 +60,12 @@ class R3BRattlePlane : public R3BDetector {
 		//should be given an affine transformation to place the plane.
 		R3BRattlePlane();
 		//parametric constructor:
+		// -- specs: the spect structure containig the measures and
+		//           placement of the rattleplane.
+		//           NOTE: there seem to be a slight problem with the
+		//                 rotations (02.03.2017)
 		// -- name: a string to name the thing. "Nebuchadnezzar" is the default.
 		// -- active: a flag to switch on and off the detector.
-		// -- trf: ...
 		R3BRattlePlane( rp_specs &specs, const char *the_name, bool active );
 		
 		virtual ~R3BRattlePlane(){};
@@ -65,7 +76,10 @@ class R3BRattlePlane : public R3BDetector {
 		virtual void EndOfEvent() { /*do nothing*/ };
 		virtual void Register();
 		virtual TClonesArray *GetCollection( Int_t iColl ) const; //retrieve the data
-		                                                          // -- iColl: ???
+		                                                          // -- iColl: is the
+		                                                          //    "index" of the
+		                                                          //    collection (data
+		                                                          //    structure)
 		virtual void Print( Option_t *opt = "" ){ /*oh please*/ };
 		virtual void Reset();
 		virtual void ConstructGeometry(); //A very important method this one: the geometry
@@ -73,6 +87,10 @@ class R3BRattlePlane : public R3BDetector {
 		                                  //whole point of this tatty class.
 		//virtual void PostTrack(); //???
 		virtual Bool_t CheckIfSensitive( std::string ){ return kTRUE; }; //it is sensitive
+
+		//make a unique (?) name from a template
+		static void mk_unique_name( char *name_template );
+		static void seed_unique_namer();
 
 		//interpreter garbage
 		ClassDef( R3BRattlePlane, 1 );
@@ -85,6 +103,13 @@ class R3BRattlePlane : public R3BDetector {
 
 		//event awareness
 		bool _is_new_event; //new event toggle (useful)
+		
+		//indexing (a bit bone headed, admittedly)
+		//more to the point, this is not thread safe.
+		//But it doesn't really matter here, since ROOT
+		//is not thread safe.
+		static int _rattler_index;
+		int _own_index;
 	private:
 		R3BRattlePlane( const R3BRattlePlane &given ); //since we are burly programmers,
 		                                               //this will support copy construction.

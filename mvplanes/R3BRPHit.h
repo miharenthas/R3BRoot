@@ -39,6 +39,7 @@ class R3BRPHit : public FairMCPoint {
 		TLorentzVector _poe, _pod; //position of arrival and departure
 		TLorentzVector _mae, _mad; //moment at arrival and departure
 		TParticle _particle; //the full particle.
+		int _issuing_rattler; //the index of the rattleplane
 
 		void Finish(); //sets some aspects of FairMCPoint that
 		                       //I'm not really interested in

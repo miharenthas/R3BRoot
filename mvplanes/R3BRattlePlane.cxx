@@ -8,6 +8,10 @@
 #include "R3BRattlePlane.h"
 
 //------------------------------------------------------------------------------------
+//init the index
+int R3BRattlePlane::_rattler_index = 0;
+
+//------------------------------------------------------------------------------------
 //ctors:
 
 //------------------------------------------------------------------------------------
@@ -16,7 +20,12 @@ R3BRattlePlane::R3BRattlePlane():
 	R3BDetector( "Nebuchadnezzar", true, RATTLEPLANE_DETECTOR_ID ),
 	_rattle_hits( new TClonesArray( "R3BRPHit" ) ),
 	_is_new_event( true )
-{}
+{
+
+	_own_index = R3BRattlePlane::_rattler_index;
+	++R3BRattlePlane::_rattler_index;
+
+}
 
 //------------------------------------------------------------------------------------
 //parametric:
@@ -27,6 +36,10 @@ R3BRattlePlane::R3BRattlePlane( rp_specs &specs, const char *the_name, bool acti
 {
 	//copy the given transformation
 	_specs = specs;
+	
+	//get an index
+	_own_index = R3BRattlePlane::_rattler_index;
+	++R3BRattlePlane::_rattler_index;
 }
 
 //------------------------------------------------------------------------------------
@@ -37,6 +50,10 @@ R3BRattlePlane::R3BRattlePlane( const R3BRattlePlane &given ):
 	_is_new_event( given._is_new_event )
 {
 	_specs = given._specs;
+	
+	//get an index: always incremental
+	_own_index = R3BRattlePlane::_rattler_index;
+	++R3BRattlePlane::_rattler_index;
 }
 
 //------------------------------------------------------------------------------------
@@ -48,6 +65,10 @@ R3BRattlePlane::R3BRattlePlane( const R3BRattlePlane &given ):
 R3BRattlePlane &R3BRattlePlane::operator=( R3BRattlePlane &right ){
 	_rattle_hits = right._rattle_hits;
 	_specs = right._specs;
+	
+	//get and index: always incremental
+	_own_index = R3BRattlePlane::_rattler_index;
+	++R3BRattlePlane::_rattler_index;
 
 	return *this;
 }
@@ -73,11 +94,14 @@ Bool_t R3BRattlePlane::ProcessHits( FairVolume *the_volume ){
 	R3BRPHit *current_hit;
 	if( gMC->IsTrackEntering() || (gMC->IsTrackInside() && _is_new_event) ){
 		if( !_is_new_event ){ //the previous event never closed
-			_hits.back()->Finish();
+			_hits.back()->Finish(); //close it
 		}
+		//make ready for a new event
+		Reset();
 		
 		//set our handy pointer to a new hit.
 		current_hit = new R3BRPHit;
+		current_hit->_issuing_rattler = _own_index; //save the index of the plane
 		_is_new_event = false; //toggle the event status
 		
 		current_hit->_e_loss = gMC->Edep(); //init the energy loss into the rattleplane
@@ -140,8 +164,8 @@ TClonesArray *R3BRattlePlane::GetCollection( Int_t iColl ) const {
 	//copy the hits
 	for( int i=0; i < _hits.size(); ++i ) (*_rattle_hits)[i] = _hits[i];
 
-	if( !iColl ) return _rattle_hits;
-	else return NULL;
+	if( !iColl ){  return _rattle_hits; }
+	else { return NULL; }
 }
 
 //------------------------------------------------------------------------------------
@@ -170,44 +194,72 @@ void R3BRattlePlane::Reset(){
 void R3BRattlePlane::ConstructGeometry(){
 	//make the transformation. I'm given to understand that the order is respected,
 	//so this should work --note: rotations and translaions are relative to the origin.
-	TGeoRotation *global_Rot = new TGeoRotation( "Hugh",
-	                                             _specs.rot_x,
-	                                             _specs.rot_y,
-	                                             _specs.rot_z );
-	TGeoTranslation *global_Trans = new TGeoTranslation( "Steven", 
+	char name_buf[128];
+	
+	//Names for the things are generated so that they are unique
+	//this way, conflicts should be avoided in case we want more
+	//than one rattleplane.
+	strcpy( name_buf, "Hugh_" ); //make the template name
+	R3BRattlePlane::mk_unique_name( name_buf ); //make the temp name.
+	TGeoRotation *global_Rot = new TGeoRotation( name_buf );
+	global_Rot->RotateX( _specs.rot_x );
+	global_Rot->RotateY( _specs.rot_y );
+	global_Rot->RotateZ( _specs.rot_z );
+
+	strcpy( name_buf, "Steven_" ); //make the template name
+	R3BRattlePlane::mk_unique_name( name_buf ); //make the temp name.
+	TGeoTranslation *global_Trans = new TGeoTranslation( name_buf, 
 	                                                     _specs.T_x,
 	                                                     _specs.T_y,
 	                                                     _specs.T_z );
 	global_Rot->RegisterYourself();
 	global_Trans->RegisterYourself();
 	
-	TGeoCombiTrans *reference_trf = new TGeoCombiTrans( "Gerald" );
+	strcpy( name_buf, "Gerald_" ); //make the template name
+	R3BRattlePlane::mk_unique_name( name_buf ); //make the temp name.
+	TGeoCombiTrans *reference_trf = new TGeoCombiTrans( name_buf );
 	reference_trf->SetRotation( *global_Rot ); //first, hopefully, rotation
 	reference_trf->SetTranslation( *global_Trans ); //then, hopefully, translation
 	reference_trf->RegisterYourself();
 	
 	//create the volume
-	TGeoBBox *rp = new TGeoBBox( "Woodrow",
+	strcpy( name_buf, "Woodrow_" ); //make the template name
+	R3BRattlePlane::mk_unique_name( name_buf ); //make the temp name.
+	TGeoBBox *rp = new TGeoBBox( name_buf,
 	                              _specs.width,
 	                              _specs.height,
 	                              _specs.depth );
-	//create the medium
-	//and it kinda had to be it, really...
-	double par[20] = { 0, 0, 0, 0, 0, 0, 1e-4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	TGeoMedium *p_med_Pu = NULL;
-	if( gGeoManager->GetMedium( "Plutonum" ) ){
-		p_med_Pu = gGeoManager->GetMedium( "Plutonium" );
-	} else {
-		TGeoMaterial *Pu = new TGeoMaterial( "Plutonium",
-		                                     244.,
-		                                     93.,
-		                                     19.87 );
-		Pu->SetIndex( 999 );
-		p_med_Pu = new TGeoMedium( "Plutonium", 999, Pu, par );
-	}
 	
-	//make the volume                             
-	TGeoVolume *rp_volume = new TGeoVolume( "Woodrow_volume", rp, p_med_Pu );
+	//make the volume , out of Lead.
+	strcpy( name_buf, "WoodyVol_" ); //make the template name
+	R3BRattlePlane::mk_unique_name( name_buf ); //make the temp name.
+	
+	//set the material, out of R3BTargetAssemblyMedia
+	TGeoMedium *p_med;
+	switch( _specs.stuff ){
+		case AIR:
+			p_med = R3BTAM::Air();
+			break;
+		case VACUUM:
+			p_med = R3BTAM::Vacuum(); //no, really?
+			break;
+		case SILICON:
+			p_med = R3BTAM::Silicon();
+			break;
+		case COPPER:
+			p_med = R3BTAM::Copper();
+			break;
+		case ALUMINIUM:
+			p_med = R3BTAM::Aluminium();
+			break;
+		case IRON:
+			p_med = R3BTAM::Iron();
+			break;
+		case LEAD : default :
+			p_med = R3BTAM::Lead();
+			break;
+	}          
+	TGeoVolume *rp_volume = new TGeoVolume( name_buf, rp, p_med );
 	
 	//and add it as sensitive
 	//NOTE: this method is local and inherited form FariModule
@@ -223,5 +275,24 @@ void R3BRattlePlane::ConstructGeometry(){
 	p_world->AddNode( rp_volume, 1, GetGlobalPosition( reference_trf ) );
 }
 
+
+//------------------------------------------------------------------------------------
+//a simple tool to generate unique-ish names
+//NOTE: "name_buf" should be big enough to hold the full unique name
+//      The unique name is just the template with an 8 cipher hex
+///     appended to it.
+void R3BRattlePlane::mk_unique_name( char *name_buf ){
+	char *buf = (char*)calloc( strlen(name_buf)+8, 1 ); //6 needed, 8 for safety...
+	strcpy( buf, name_buf );
+	strcat( buf, "%06x" );
+	sprintf( name_buf, buf, rand()%0xffffff );
+	free( buf );
+}
+
+//and seed the sequence (done manually, externally)
+void R3BRattlePlane::seed_unique_namer(){
+	srand( time(NULL) );
+}
+	
 //interpreter garbage
 ClassImp( R3BRattlePlane );
