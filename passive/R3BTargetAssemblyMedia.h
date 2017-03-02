@@ -22,6 +22,18 @@
 //stl includes
 #include <string.h> //memset
 
+//an enum to select the materials according to spec
+typedef enum R3BTargetAssemblyMedia_switcher {
+	AIR = 'A',
+	VACUUM, //B
+	SILICON, //C
+	COPPER, //D
+	ALUMINIUM, //E
+	IRON, //F
+	LEAD //G
+} R3BTAM_switcher;
+
+
 class R3BTargetAssemblyMedia {
 	public:
 		//Ctor, dtor: academic
