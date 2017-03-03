@@ -154,8 +154,10 @@ void R3BRattlePlane::PostTrack(){
 //------------------------------------------------------------------------------------
 //Register: make the FairRootManager aware that we exist
 void R3BRattlePlane::Register() {
-	//Just this...
-	FairRootManager::Instance()->Register( "Rattles", GetName(), _rattle_hits, kTRUE );
+	//make an unique name for the collection
+	char name_buf[64] = "Rattles_";
+	mk_unique_name( name_buf );
+	FairRootManager::Instance()->Register( name_buf, GetName(), _rattle_hits, kTRUE );
 }
 
 //------------------------------------------------------------------------------------
