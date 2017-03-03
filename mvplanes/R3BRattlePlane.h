@@ -109,7 +109,7 @@ class R3BRattlePlane : public R3BDetector {
 		//But it doesn't really matter here, since ROOT
 		//is not thread safe.
 		static int _rattler_index;
-		int _own_index;
+		const int _own_index;
 	private:
 		R3BRattlePlane( const R3BRattlePlane &given ); //since we are burly programmers,
 		                                               //this will support copy construction.

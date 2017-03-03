@@ -19,10 +19,10 @@ int R3BRattlePlane::_rattler_index = 0;
 R3BRattlePlane::R3BRattlePlane():
 	R3BDetector( "Nebuchadnezzar", true, RATTLEPLANE_DETECTOR_ID ),
 	_rattle_hits( new TClonesArray( "R3BRPHit" ) ),
-	_is_new_event( true )
+	_is_new_event( true ),
+	_own_index( R3BRattlePlane::_rattler_index )
 {
 
-	_own_index = R3BRattlePlane::_rattler_index;
 	++R3BRattlePlane::_rattler_index;
 
 }
@@ -32,13 +32,13 @@ R3BRattlePlane::R3BRattlePlane():
 R3BRattlePlane::R3BRattlePlane( rp_specs &specs, const char *the_name, bool active ):
 	R3BDetector( the_name, active, RATTLEPLANE_DETECTOR_ID ),
 	_rattle_hits( new TClonesArray( "R3BRPHit" ) ),
-	_is_new_event( true )
+	_is_new_event( true ),
+	_own_index( R3BRattlePlane::_rattler_index )
 {
 	//copy the given transformation
 	_specs = specs;
 	
 	//get an index
-	_own_index = R3BRattlePlane::_rattler_index;
 	++R3BRattlePlane::_rattler_index;
 }
 
@@ -47,12 +47,12 @@ R3BRattlePlane::R3BRattlePlane( rp_specs &specs, const char *the_name, bool acti
 R3BRattlePlane::R3BRattlePlane( const R3BRattlePlane &given ):
 	R3BDetector( given._name.c_str(), true, RATTLEPLANE_DETECTOR_ID ),
 	_rattle_hits( new TClonesArray( *given._rattle_hits ) ),
-	_is_new_event( given._is_new_event )
+	_is_new_event( given._is_new_event ),
+	_own_index( R3BRattlePlane::_rattler_index )
 {
 	_specs = given._specs;
 	
 	//get an index: always incremental
-	_own_index = R3BRattlePlane::_rattler_index;
 	++R3BRattlePlane::_rattler_index;
 }
 
@@ -66,10 +66,6 @@ R3BRattlePlane &R3BRattlePlane::operator=( R3BRattlePlane &right ){
 	_rattle_hits = right._rattle_hits;
 	_specs = right._specs;
 	
-	//get and index: always incremental
-	_own_index = R3BRattlePlane::_rattler_index;
-	++R3BRattlePlane::_rattler_index;
-
 	return *this;
 }
 
