@@ -57,7 +57,7 @@ class R3BTargetShielding : public R3BModule {
 		virtual void ConstructGeometry();
 
 		//some gobbins
-		virtual Bool_t CheckIfSensitive( std::string &name ){ return kFALSE; };
+		virtual Bool_t CheckIfSensitive( std::string name ){ return kFALSE; };
 
 		ClassDef( R3BTargetShielding, 1 )
 
