@@ -18,7 +18,7 @@ int R3BRattlePlane::_rattler_index = 0;
 //default:
 R3BRattlePlane::R3BRattlePlane():
 	R3BDetector( "Nebuchadnezzar", true, RATTLEPLANE_DETECTOR_ID ),
-	_rattle_hits( new TClonesArray( "R3BRPHit" ) ),
+	_rattle_hits( new TClonesArray( "R3BRPHit", 1024 ) ),
 	_is_new_event( true ),
 	_own_index( R3BRattlePlane::_rattler_index )
 {
@@ -31,7 +31,7 @@ R3BRattlePlane::R3BRattlePlane():
 //parametric:
 R3BRattlePlane::R3BRattlePlane( rp_specs &specs, const char *the_name, bool active ):
 	R3BDetector( the_name, active, RATTLEPLANE_DETECTOR_ID ),
-	_rattle_hits( new TClonesArray( "R3BRPHit" ) ),
+	_rattle_hits( new TClonesArray( "R3BRPHit", 1024 ) ),
 	_is_new_event( true ),
 	_own_index( R3BRattlePlane::_rattler_index )
 {
@@ -88,12 +88,10 @@ Bool_t R3BRattlePlane::ProcessHits( FairVolume *the_volume ){
 	//if the track is entering, set the data
 	//which is what we are actually interested in.
 	R3BRPHit *current_hit;
-	if( gMC->IsTrackEntering() || (gMC->IsTrackInside() && _is_new_event) ){
+	if( gMC->IsTrackEntering() ){
 		if( !_is_new_event ){ //the previous event never closed
 			_hits.back()->Finish(); //close it
 		}
-		//make ready for a new event
-		Reset();
 		
 		//set our handy pointer to a new hit.
 		current_hit = new R3BRPHit;
@@ -111,6 +109,8 @@ Bool_t R3BRattlePlane::ProcessHits( FairVolume *the_volume ){
 		current_hit->SetEventID( gMC->CurrentEvent() );
 		
 		//retrieve (immediately) the hierarchy info
+		//NOTE: this is a number which represent the internal Monte Carlo
+		//      designation. If this number is -1, then it's a primary.
 		current_hit->_parent_id = gMC->GetStack()->GetCurrentParentTrackNumber();
 		
 		//save 
@@ -131,21 +131,14 @@ Bool_t R3BRattlePlane::ProcessHits( FairVolume *the_volume ){
 		//do something to the stack
 		((R3BStack*)gMC->GetStack())->AddPoint( RATTLEPLANE_DETECTOR_ID );
 		_is_new_event = true; //toggle the event status
+	} else {
+		//if it's just in it, just increment the energy
+		current_hit = _hits.back();
+		current_hit->_e_loss += gMC->Edep();
 	}
-	
-	//if it's just in it, just increment the energy
-	current_hit = _hits.back();
-		
-	current_hit->_e_loss += gMC->Edep();
+
 	return kTRUE;
 }
-
-/*------------------------------------------------------------------------------------
-//The PostTrack method! Yay! What does it do?
-void R3BRattlePlane::PostTrack(){
-	ProcessHits( NULL ); //just redirect the call and do the hitting
-}*/
-	
 
 //------------------------------------------------------------------------------------
 //Register: make the FairRootManager aware that we exist
@@ -161,14 +154,15 @@ void R3BRattlePlane::Register() {
 TClonesArray *R3BRattlePlane::GetCollection( Int_t iColl ) const {
 	//copy the hits
 	for( int i=0; i < _hits.size(); ++i ) (*_rattle_hits)[i] = _hits[i];
-
+	
 	if( !iColl ){  return _rattle_hits; }
 	else { return NULL; }
 }
 
 //------------------------------------------------------------------------------------
 //Reset: possibly, make ready for the next event.
-void R3BRattlePlane::Reset(){
+//void R3BRattlePlane::Reset(){
+void R3BRattlePlane::EndOfEvent(){
 	for( int i=0; i < _hits.size(); ++i ) delete _hits[i];
 	_hits.clear();
 	

@@ -73,7 +73,7 @@ class R3BRattlePlane : public R3BDetector {
 		//implementation of the various abstract method of the parent class
 		virtual void Initialize();
 		virtual Bool_t ProcessHits( FairVolume *fair_vol = NULL );
-		virtual void EndOfEvent() { /*do nothing*/ };
+		virtual void EndOfEvent();
 		virtual void Register();
 		virtual TClonesArray *GetCollection( Int_t iColl ) const; //retrieve the data
 		                                                          // -- iColl: is the
@@ -81,7 +81,6 @@ class R3BRattlePlane : public R3BDetector {
 		                                                          //    collection (data
 		                                                          //    structure)
 		virtual void Print( Option_t *opt = "" ){ /*oh please*/ };
-		virtual void Reset();
 		virtual void ConstructGeometry(); //A very important method this one: the geometry
 		                                  //of the detector is made in here and it's the
 		                                  //whole point of this tatty class.
@@ -101,7 +100,6 @@ class R3BRattlePlane : public R3BDetector {
 		rp_specs _specs; //the specs
 		std::string _name; //keep track of the name
 
-		//event awareness
 		bool _is_new_event; //new event toggle (useful)
 		
 		//indexing (a bit bone headed, admittedly)

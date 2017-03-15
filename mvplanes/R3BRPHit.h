@@ -42,7 +42,13 @@ class R3BRPHit : public FairMCPoint {
 		int _issuing_rattler; //the index of the rattleplane
 
 		void Finish(); //sets some aspects of FairMCPoint that
-		                       //I'm not really interested in
+		               //I'm not really interested in
+		
+		//A tinty check on primary particles
+		//NOTE: _parent_id is a number which represent the internal Monte Carlo
+		//      designation. If this number is -1, then it's a primary --
+		//      a particle that came out of the event generator.
+		bool IsPrimary(){ if( _parent_id == -1 ) return true; return false; };
 		
 		ClassDef( R3BRPHit, 1 );
 };
