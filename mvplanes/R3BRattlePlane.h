@@ -74,6 +74,7 @@ class R3BRattlePlane : public R3BDetector {
 		virtual void Initialize();
 		virtual Bool_t ProcessHits( FairVolume *fair_vol = NULL );
 		virtual void EndOfEvent();
+		virtual void Reset() { /*do nothing*/ };
 		virtual void Register();
 		virtual TClonesArray *GetCollection( Int_t iColl ) const; //retrieve the data
 		                                                          // -- iColl: is the
