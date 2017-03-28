@@ -38,7 +38,9 @@ class R3BRPHit : public FairMCPoint {
 		int _parent_id; //hierarchy info (the track ID is stored in FairMCPoint::fTrackID)
 		TLorentzVector _poe, _pod; //position of arrival and departure
 		TLorentzVector _mae, _mad; //moment at arrival and departure
-		TParticle _particle; //the full particle.
+		int _pdg; //the pdg code
+		double _mass; //the mass of the particle
+		double _charge; //the charge of the particle
 		int _issuing_rattler; //the index of the rattleplane
 
 		void Finish(); //sets some aspects of FairMCPoint that

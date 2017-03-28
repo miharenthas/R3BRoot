@@ -102,7 +102,11 @@ Bool_t R3BRattlePlane::ProcessHits( FairVolume *the_volume ){
 		current_hit->_toa = gMC->TrackTime(); //time of arrival
 		gMC->TrackPosition( current_hit->_poe ); //point of entry
 		gMC->TrackMomentum( current_hit->_mae ); //momentum at entry
-		current_hit->_particle = *gMC->GetStack()->GetCurrentTrack(); //download the full beef
+		current_hit->_mass = gMC->TrackMass(); //get the mass
+		current_hit->_charge = gMC->TrackCharge(); //get the charge
+		current_hit->_pdg = gMC->GetStack()->
+		                         GetCurrentTrack()->
+		                         GetPdgCode(); //the PDG code
 		
 		current_hit->SetTrackID( gMC->GetStack()->GetCurrentTrackNumber() );
 		current_hit->SetDetectorID( RATTLEPLANE_DETECTOR_ID );
