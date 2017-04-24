@@ -240,9 +240,9 @@ void create_dch_geo(const char* geoTag)
   /*___R_Z1___*/ rz1 = -8.880000;
   
   Double_t rx2, ry2, rz2;
-  /*___R_X1___*/ rx1 = 0;
-  /*___R_Y1___*/ ry1 = -31.0;
-  /*___R_Z1___*/ rz1 = 9.35;
+  /*___R_X2___*/ rx2 = 0;
+  /*___R_Y2___*/ ry2 = -31.0;
+  /*___R_Z2___*/ rz2 = 9.35;
   /************************DETECTOR ROTATION********************************/
   
   TGeoRotation *gRot1 = new TGeoRotation();
