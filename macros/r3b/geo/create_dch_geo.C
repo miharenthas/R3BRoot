@@ -211,14 +211,16 @@ void create_dch_geo(const char* geoTag)
   //Double_t pDch2y = 1.02 ;    //Justyna
   //Double_t pDch2z = 535.1 ;   //Justyna
 
+  /************************DETECTOR XYZ PLACEMENT****************************/
   //use identical values as for the tracker config and the digitizer. F. Wamers. 
-  Double_t pDch1x = -123.219446 ; //Felix 
-  Double_t pDch1y = 3.597104 ;     //Felix
-  Double_t pDch1z = 444.126271 ;  //Felix
+  /*___X1___*/ Double_t pDch1x = -123.219446 ; //Felix 
+  /*___Y1___*/ Double_t pDch1y = 3.597104 ;     //Felix
+  /*___Z1___*/ Double_t pDch1z = 444.126271 ;  //Felix
 
-  Double_t pDch2x = -167.015888 ;  //Felix
-  Double_t pDch2y = 1.016917 ;    //Felix
-  Double_t pDch2z = 535.093884 ;   //Felix
+  /*___X2___*/ Double_t pDch2x = -167.015888 ;  //Felix
+  /*___Y2___*/ Double_t pDch2y = 1.016917 ;    //Felix
+  /*___Z2___*/ Double_t pDch2z = 535.093884 ;   //Felix
+  /************************DETECTOR XYZ PLACEMENT****************************/
    
   //   Double_t pDch1x = -132.233355 ; //Christoph  
   //   Double_t pDch1y = 1.037475 ;     //Christoph 
@@ -231,23 +233,27 @@ void create_dch_geo(const char* geoTag)
 
   //The order of rotation matters!!! Rotate first z, and then y! Felix
 
-  Double_t aDch1 = -31.0 ; 
-  Double_t aDch2 = -31.0 ; 
-
+  /************************DETECTOR ROTATION*********************************/
+  Double_t rx1, ry1, ry2;
+  /*___R_X1___*/ rx1 = 0;
+  /*___R_Y1___*/ ry1 = -31.0;
+  /*___R_Z1___*/ rz1 = -8.880000;
+  
+  Double_t rx2, ry2, rz2;
+  /*___R_X1___*/ rx1 = 0;
+  /*___R_Y1___*/ ry1 = -31.0;
+  /*___R_Z1___*/ rz1 = 9.35;
+  /************************DETECTOR ROTATION********************************/
+  
   TGeoRotation *gRot1 = new TGeoRotation();
-  gRot1->RotateX(0.);
-  gRot1->RotateZ(-8.880000); //Justyna
-  //gRot1->RotateZ(+8.880000); //Felix
-  //   gRot1->RotateZ(-2.5); //Christoph
-  gRot1->RotateY(aDch1);
+  gRot1->RotateX(rx1);
+  gRot1->RotateZ(rz1);
+  gRot1->RotateY(ry1);
    
   TGeoRotation *gRot2 = new TGeoRotation();
-  gRot2->RotateX(0.);
-  gRot2->RotateZ(9.350000); //Justyna
-  //gRot2->RotateZ(-9.350000); //Felix
-  //   gRot2->RotateZ(8.4); //Christoph
-  gRot2->RotateY(aDch2);
-
+  gRot2->RotateX(rx2);
+  gRot2->RotateZ(rz2);
+  gRot2->RotateY(ry2);
 
   // Helium Bag definition
   Double_t heDx= alDx ; //[cm]

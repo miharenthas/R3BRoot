@@ -207,9 +207,9 @@ void R3BRattlePlane::ConstructGeometry(){
 	strcpy( name_buf, "Steven_" ); //make the template name
 	R3BRattlePlane::mk_unique_name( name_buf ); //make the temp name.
 	TGeoTranslation *global_Trans = new TGeoTranslation( name_buf, 
-	                                                     _specs.T_x,
-	                                                     _specs.T_y,
-	                                                     _specs.T_z );
+	                                                     .5*_specs.T_x,
+	                                                     .5*_specs.T_y,
+	                                                     .5*_specs.T_z );
 	global_Rot->RegisterYourself();
 	global_Trans->RegisterYourself();
 	
