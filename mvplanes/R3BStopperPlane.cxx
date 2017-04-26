@@ -89,16 +89,5 @@ Bool_t R3BStopperPlane::ProcessHits( FairVolume *fair_vol ){
 	return kTRUE;
 }
 
-//------------------------------------------------------------------------------------
-//Register: make the FairRootManager aware that we exist
-void R3BStopperPlane::Register() {
-	//make an unique name for the collection
-	char name_buf[64];
-	sprintf( name_buf, "Stoppages_%06x", _own_index ); //can't be random here, sorry
-	                                                 //at least if you want to be able
-	                                                 //to conveniently join trees. 
-	FairRootManager::Instance()->Register( name_buf, GetName(), _rattle_hits, kTRUE );
-}
-
 //interpreter garbage
 ClassImp( R3BStopperPlane );

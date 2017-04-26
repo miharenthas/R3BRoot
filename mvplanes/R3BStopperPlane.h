@@ -70,9 +70,6 @@ class R3BStopperPlane : public R3BRattlePlane {
 		//because we need to kill the track in its steps.
 		virtual Bool_t ProcessHits( FairVolume *fair_vol = NULL );
 		
-		//And the Register method, for customized naming
-		virtual void Register();
-		
 		//usual interpreter garbage
 		//NOTE: these classes don't actually work in CINT
 		ClassDef( R3BStopperPlane, 1 );
