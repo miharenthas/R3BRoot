@@ -211,15 +211,24 @@ void create_dch_geo(const char* geoTag)
   //Double_t pDch2y = 1.02 ;    //Justyna
   //Double_t pDch2z = 535.1 ;   //Justyna
 
-  /************************DETECTOR XYZ PLACEMENT****************************/
-  //use identical values as for the tracker config and the digitizer. F. Wamers. 
-  /*___X1___*/ Double_t pDch1x = -123.219446 ; //Felix 
-  /*___Y1___*/ Double_t pDch1y = 3.597104 ;     //Felix
-  /*___Z1___*/ Double_t pDch1z = 444.126271 ;  //Felix
+  //Double_t pDch1x = -123.219446 ; //Felix 
+  //Double_t pDch1y = 3.597104 ;     //Felix
+  //Double_t pDch1z = 444.126271 ;  //Felix
 
-  /*___X2___*/ Double_t pDch2x = -167.015888 ;  //Felix
-  /*___Y2___*/ Double_t pDch2y = 1.016917 ;    //Felix
-  /*___Z2___*/ Double_t pDch2z = 535.093884 ;   //Felix
+  //Double_t pDch2x = -167.015888 ;  //Felix
+  //Double_t pDch2y = 1.016917 ;    //Felix
+  //Double_t pDch2z = 535.093884 ;   //Felix
+
+  /************************DETECTOR XYZ PLACEMENT****************************/
+  /*FELIX was the default position on 24.04.2017 -- L. Zanetti.
+  //use identical values as for the tracker config and the digitizer. F. Wamers. 
+/*___X1___*/ Double_t pDch1x = -123.219446;
+/*___Y1___*/ Double_t pDch1y = 3.597104;
+/*___Z1___*/ Double_t pDch1z = 444.126271;
+
+/*___X2___*/ Double_t pDch2x = -167.015888;
+/*___Y2___*/ Double_t pDch2y = 1.016917;
+/*___Z2___*/ Double_t pDch2z = 535.093884;
   /************************DETECTOR XYZ PLACEMENT****************************/
    
   //   Double_t pDch1x = -132.233355 ; //Christoph  
@@ -232,17 +241,27 @@ void create_dch_geo(const char* geoTag)
    
 
   //The order of rotation matters!!! Rotate first z, and then y! Felix
+  //Double_t rx1, ry1, ry2;
+  // rx1 = 0;
+  // ry1 = -31.0;
+  // rz1 = -8.880000;
+  
+  //Double_t rx2, ry2, rz2;
+  // rx2 = 0;
+  // ry2 = -31.0;
+  // rz2 = 9.35;
 
   /************************DETECTOR ROTATION*********************************/
-  Double_t rx1, ry1, ry2;
-  /*___R_X1___*/ rx1 = 0;
-  /*___R_Y1___*/ ry1 = -31.0;
-  /*___R_Z1___*/ rz1 = -8.880000;
+  /*The old default is saved right above*/
+  Double_t rx1, ry1, rz2;
+/*___R_X1___*/ rx1 = 0;
+/*___R_Y1___*/ ry1 = -31.0;
+/*___R_Z1___*/ rz1 = -8.880000;
   
   Double_t rx2, ry2, rz2;
-  /*___R_X2___*/ rx2 = 0;
-  /*___R_Y2___*/ ry2 = -31.0;
-  /*___R_Z2___*/ rz2 = 9.35;
+/*___R_X2___*/ rx2 = 0;
+/*___R_Y2___*/ ry2 = -31.0;
+/*___R_Z2___*/ rz2 = 9.35;
   /************************DETECTOR ROTATION********************************/
   
   TGeoRotation *gRot1 = new TGeoRotation();
