@@ -1,5 +1,6 @@
 /*******************************************************
 //Author: L. Zanetti (lzanetti@ikp.tu-darmstadt.de)
+//Special thanks: Paulina Mueller (pmueller@ikp.tu-darmstadt.de)
 //Date: 15.02.2017
 //Description: Implementation of the class
 //             R3BRattlePlane

@@ -1,17 +1,16 @@
 /*******************************************************
 //Author: L. Zanetti (lzanetti@ikp.tu-darmstadt.de)
+//Special thanks: Paulina Mueller (pmueller@ikp.tu-darmstadt.de)
 //Date: 15.02.2017
 //Description: This class defines a giant plane detector
 //             that will register energy, momentum and
 //             coordinates of any incoming particle.
 //Usage: Unlike other detectors, this one can (and should)
 //       be placed at runtime. To do so, you have to pass an
-//       instace of the rp_trf structure, carrying information
+//       instace of the rp_specs structure, carrying information
 //       about the position and rotation of the plane.
 //       By default, the plane will be created at the origin
-//       and perpendicular to the beam (Z) axis; the default
-//       measures are specified by defined constants --and can
-//       be modified with the transformation, of course.
+//       and perpendicular to the beam (Z) axis.
 //NOTE: needless to say, this is a probe for the simulation
 //      not a real detector.
 *******************************************************/

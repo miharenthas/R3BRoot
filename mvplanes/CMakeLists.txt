@@ -33,6 +33,7 @@ Set(DEPENDENCIES
 set(SRCS
 R3BRattlePlane.cxx
 R3BRPHit.cxx 
+R3BStopperPlane.cxx
 )
 
 # fill list of header files from list of source files

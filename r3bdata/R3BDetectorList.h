@@ -28,7 +28,8 @@ enum DetectorId
     kNEULAND,
     kACTAR,
     kLAST,
-    kRATTLEPLANE
+    kRATTLEPLANE, //L. Zanetti: the rattleplane
+    kSTOPPERPLANE //L. Zanetti: the stopperplane
 };
 
 /** Unique identifier for all R3B Point and Hit types **/
