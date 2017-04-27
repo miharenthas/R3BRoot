@@ -208,9 +208,9 @@ void R3BRattlePlane::ConstructGeometry(){
 	strcpy( name_buf, "Steven_" ); //make the template name
 	R3BRattlePlane::mk_unique_name( name_buf ); //make the temp name.
 	TGeoTranslation *global_Trans = new TGeoTranslation( name_buf, 
-	                                                     .5*_specs.T_x,
-	                                                     .5*_specs.T_y,
-	                                                     .5*_specs.T_z );
+	                                                     _specs.T_x,
+	                                                     _specs.T_y,
+	                                                     _specs.T_z );
 	global_Rot->RegisterYourself();
 	global_Trans->RegisterYourself();
 	
@@ -225,9 +225,9 @@ void R3BRattlePlane::ConstructGeometry(){
 	strcpy( name_buf, "Woodrow_" ); //make the template name
 	R3BRattlePlane::mk_unique_name( name_buf ); //make the temp name.
 	TGeoBBox *rp = new TGeoBBox( name_buf,
-	                              _specs.width,
-	                              _specs.height,
-	                              _specs.depth );
+	                              .5*_specs.width,
+	                              .5*_specs.height,
+	                              .5*_specs.depth );
 	
 	//make the volume , out of Lead.
 	strcpy( name_buf, "WoodyVol_" ); //make the template name
