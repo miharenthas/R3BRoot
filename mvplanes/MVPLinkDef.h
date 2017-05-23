@@ -6,6 +6,8 @@
 
 #pragma link C++ class R3BRattlePlane+;
 #pragma link C++ class R3BStopperPlane+;
+#pragma link C++ class R3BSegmentedRattlePlane+;
+//#pragma link C++ class R3BMvNeuLANDPlane+;
 #pragma link C++ class R3BRPHit+;
 
 #endif

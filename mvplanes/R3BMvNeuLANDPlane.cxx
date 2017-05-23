@@ -12,18 +12,18 @@
 
 //------------------------------------------------------------------------------------
 //default:
-R3BMvNEuLANDPlane::R3BMvNeuLANDPlane():
-	R3BRattlePlane(), //default construct the rattleplane
+R3BMvNeuLANDPlane::R3BMvNeuLANDPlane():
+	R3BSegmentedRattlePlane(), //default construct the rattleplane
 	_neuland_hits( new TClonesArray( "R3BNeulandPoint", 1024 ) ) //this also has to
-	                                                            //be initialized.
+	                                                             //be initialized.
 {}
 
 //------------------------------------------------------------------------------------
 //parametric:
 R3BMvNeuLANDPlane::R3BMvNeuLANDPlane( rp_specs &specs, const char *the_name, bool active ):
-	R3BRattlePlane( specs, the_name, active ),
+	R3BSegmentedRattlePlane( specs, {50, 0, 0, GTAPETHICKNESS, 0, 0}, the_name, active ),
 	_neuland_hits( new TClonesArray( "R3BNeulandPoint", 1024 ) ) //this also has to
-	                                                            //be initialized.
+	                                                             //be initialized.
 {}
 
 //------------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ TClonesArray *R3BMvNeuLANDPlane::GetCollection( Int_t iColl ) const {
 			for( int i=0; i < _hits.size(); ++i ) (*_rattle_hits)[i] = _hits[i];
 			return _rattle_hits;
 			break;
-		default
+		default:
 			return NULL;
 			break;
 	}
@@ -90,8 +90,8 @@ inline double R3BMvNeuLANDPlane::GetLightYield( int charge, double length, doubl
 	// Apply correction for higher charge states
 	if( fabs(charge) >= 2 ) birkC1Mod *= 0.571428571;
 
-	double dedxcm = 1000.*edep/length;
-	double lightYield = edep/(1. + birkC1Mod*dedxcm + BirkC2*pow( dedxcm,2 ) );
+	double dedxcm = 1000.*E/length;
+	double lightYield = E/(1. + birkC1Mod*dedxcm + BirkC2*pow( dedxcm,2 ) );
 	return lightYield;
 }
 
@@ -124,14 +124,14 @@ Bool_t R3BMvNeuLANDPlane::ProcessHits( FairVolume *fair_vol ){
 		}
 		
 		//push back the new neuland point
-		_neuland_points.push_back( new R3BNeulandPoint( last_rph->GetTrackId(),
+		_neuland_points.push_back( new R3BNeulandPoint( last_rph->GetTrackID(),
 		                                                _nsi.paddle_id,
-		                                                last_rph->poe.Vect(),
-		                                                last_rph->moe.Vect(),
+		                                                last_rph->_poe.Vect(),
+		                                                last_rph->_mae.Vect(),
 		                                                last_rph->_toa,
 		                                                _nsi.t_length,
-		                                                lat_rph->_e_loss,
-		                                                last_rph->GetEventId(),
+		                                                last_rph->_e_loss,
+		                                                last_rph->GetEventID(),
 		                                                _nsi.light_yield ) );
 		
 		//add the new point to the R3BStack
@@ -166,9 +166,9 @@ void R3BMvNeuLANDPlane::ConstructGeometry(){
 	     a < GPADDLEDISTANCE*GPADDLESPERPLANE;
 	     a += GPADDLEDISTANCE*2 ){
 	     	++paddle_idx;
-	     	volNeuland->AddNode( paddle, paddle_idx, TGeoTranslation( a, 0, 
-	     	                                                          -2*GPADDLEDISTANCE,
-	     	                                                          rot90 );
+	     	volNeuland->AddNode( paddle, paddle_idx, new TGeoCombiTrans( a, 0, 
+	     	                                                             -2*GPADDLEDISTANCE,
+	     	                                                             rot90 ) );
 	}
 	
 	//make the neuland plane transformation
@@ -226,11 +226,11 @@ TGeoShape *R3BMvNeuLANDPlane::BuildPaddleShape( const char *the_name,
 	
 	TString name( the_name );
 	
-	new TGeoBBox( name + "Box", length, width, width);
-	new TGeoCone( name + "Cone",
-	              coneLength + 0.001, 0.,
-	              coneRadius, 0., width * sqrt(2.) );
-	new TGeoBBox( name + "Conebox", width, width, coneLength);
+	TGeoBBox *a_box = new TGeoBBox( name + "Box", length, width, width );
+	TGeoCone *a_cone = new TGeoCone( name + "Cone",
+	                                 coneLength + 0.001, 0.,
+	                                 coneRadius, 0., width * sqrt(2.) );
+	TGeoBBox *a_conebox = new TGeoBBox( name + "Conebox", width, width, coneLength );
 	TGeoShape *shape = new TGeoCompositeShape( name,
 	                                           name + "Box + ((" +
 	                                           name + "Conebox*" +
@@ -279,33 +279,40 @@ TGeoVolume *R3BMvNeuLANDPlane::BuildPaddleVolume(){
 	trc2->RegisterYourself();
 
 	// Build shapes
-	TGeoShape *shapeBC408 = BuildPaddleShape( "shapeBC408",
-	                                           GPADDLEBASELENGTH,
+	//A preliminary structure
+	struct { double length;
+	         double width;
+	         double coneRadius;
+	         double coneLength; } info_buf = { GPADDLEBASELENGTH,
 	                                           GBC408THICKNESS,
 	                                           GBC408CONERADIUS,
-	                                           GPADDLECONELENGTH );
-
+	                                           GPADDLECONELENGTH };
+	
+	TGeoShape *shapeBC408 = BuildPaddleShape( "shapeBC408",
+	                                           &info_buf );
+	info_buf = { GPADDLEBASELENGTH,
+                 GBC408THICKNESS + GALTHICKNESS,
+                 GBC408CONERADIUS +  GALTHICKNESS,
+                 GPADDLECONELENGTH };
 	TGeoShape *shapeAlWrapping = BuildPaddleShape( "shapeAlWrappingSolid",
-                                                    GPADDLEBASELENGTH,
-                                                    GBC408THICKNESS + GALTHICKNESS,
-                                                    GBC408CONERADIUS +  GALTHICKNESS,
-                                                    GPADDLECONELENGTH );
+                                                   &info_buf );
 		          
-	TGeoShape *shapeAlWrapping = new TGeoCompositeShape( "shapeAlWrapping",
-	                                                      "shapeAlWrappingSolid - shapeBC408" );
-
-	TGeoShape *shapeTapeWrapping = new BuildPaddleShape( "shapeTapeWrappingSolid",
-	                                                     GPADDLEBASELENGTH,
-	                                                     GBC408THICKNESS +
-	                                                     GALTHICKNESS +
-	                                                     GTAPETHICKNESS,
-	                                                     GBC408CONERADIUS +
-	                                                     GALTHICKNESS +
-	                                                     GTAPETHICKNESS,
-	                                                     GPADDLECONELENGTH );
-	TGeoShape *shapeTapeWrapping = new TGeoCompositeShape( "shapeTapeWrapping",
-	                                                       "shapeTapeWrappingSolid -\
-	                                                        shapeAlWrappingSolid");
+	shapeAlWrapping = new TGeoCompositeShape( "shapeAlWrapping",
+	                                          "shapeAlWrappingSolid - shapeBC408" );
+	
+	info_buf = { GPADDLEBASELENGTH,
+	             GBC408THICKNESS +
+	             GALTHICKNESS +
+	             GTAPETHICKNESS,
+	             GBC408CONERADIUS +
+	             GALTHICKNESS +
+	             GTAPETHICKNESS,
+	             GPADDLECONELENGTH };
+	TGeoShape *shapeTapeWrapping = BuildPaddleShape( "shapeTapeWrappingSolid",
+	                                                 &info_buf );
+	shapeTapeWrapping = new TGeoCompositeShape( "shapeTapeWrapping",
+	                                            "shapeTapeWrappingSolid -\
+	                                            shapeAlWrappingSolid");
 
 	// Build Volumes. Note that the volume names are important and reappear in R3BNeuland()
 	//This is the active volume, and as such it should be registered
@@ -317,7 +324,7 @@ TGeoVolume *R3BMvNeuLANDPlane::BuildPaddleVolume(){
 	TGeoVolume *volAlWrapping = new TGeoVolume("volAlWrapping", shapeAlWrapping, medAl);
 	TGeoVolume *volTapeWrapping = new TGeoVolume("volTapeWrapping", shapeTapeWrapping, medCH2);
 
-	/Make the elementary assembly
+	//Make the elementary assembly
 	TGeoVolume *volPaddle = new TGeoVolumeAssembly("volPaddle");
 	volPaddle->AddNode(volBC408, 1);
 	volPaddle->AddNode(volAlWrapping, 1);
@@ -325,3 +332,4 @@ TGeoVolume *R3BMvNeuLANDPlane::BuildPaddleVolume(){
 
 	return volPaddle;
 }
+

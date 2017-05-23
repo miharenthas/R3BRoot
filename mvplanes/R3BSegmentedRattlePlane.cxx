@@ -5,6 +5,8 @@
 //             R3BsegmentedRattlePlane.h
 *******************************************************/
 
+#include "R3BSegmentedRattlePlane.h"
+
 //------------------------------------------------------------------------------------
 //NOTE: proper implementation coming soon
 //      this will suffice for now.
@@ -12,8 +14,8 @@
 //------------------------------------------------------------------------------------
 //Get/make the material
 TGeoMedium *R3BSegmentedRattlePlane::BuildMaterial( const char *material,
-                                              FairGeoMedia *geoMedia,
-                                              FairGeoBuilder *geoBuild )
+                                                    FairGeoMedia *geoMedia,
+                                                    FairGeoBuilder *geoBuild )
 {
 	FairGeoMedium *fairMedium = geoMedia->getMedium( material );
 	if( !fairMedium ) {

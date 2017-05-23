@@ -9,7 +9,8 @@ ${BASE_INCLUDE_DIRECTORIES}
 
 set(INCLUDE_DIRECTORIES
 ${R3BROOT_SOURCE_DIR}/r3bbase
-${R3BROOT_SOURCE_DIR}/r3bdata  
+${R3BROOT_SOURCE_DIR}/r3bdata
+${R3BROOT_SOURCE_DIR}/r3bdata/neulandData  
 ${R3BROOT_SOURCE_DIR}/mvplanes
 ${R3BROOT_SOURCE_DIR}/passive ) #for the materials...
 
@@ -34,6 +35,8 @@ set(SRCS
 R3BRattlePlane.cxx
 R3BRPHit.cxx 
 R3BStopperPlane.cxx
+R3BSegmentedRattlePlane.cxx
+R3BMvNeuLANDPlane.cxx
 )
 
 # fill list of header files from list of source files

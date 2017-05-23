@@ -25,12 +25,13 @@
 
 #include "FairLogger.h"
 #include "FairRootManager.h"
+#include "FairGeoMedia.h"
+#include "FairGeoBuilder.h"
 
 #include "R3BMCStack.h" //for R3BStack
 #include "R3BRattlePlane.h" //The rattleplane, from which this
                             //inherits
 #include "R3BRPHit.h" //will also produces rattles.
-#include "R3BNeulandPoint.h" //This should produce neuland points, at least.
 #include "R3BTargetAssemblyMedia.h" //This is here to provide materials, even
                                     //if this is not strictly its intended
                                     //application. Still, should work.
@@ -39,7 +40,7 @@
 //NOTE: this class hasn't been implemented yet, it's just here
 //      to provide intellectual consistency to the RP's family tree
 //      BUT it WILL be implemented! So watch out!
-class R3BMvNeuLANDPlane : public R3BSegmentedRattlePlane {
+class R3BSegmentedRattlePlane : public R3BRattlePlane {
 	public:
 		//A data structure to hold the
 		//segments' spec
@@ -49,7 +50,7 @@ class R3BMvNeuLANDPlane : public R3BSegmentedRattlePlane {
 		} sg_specs;
 		
 		//ctors, dtor.
-		R3BsegmentedRattlePlane() {};
+		R3BSegmentedRattlePlane(): R3BRattlePlane() {};
 		//parametric constructor:
 		// -- specs: the spect structure containig the measures and
 		//           placement of the rattleplane.
@@ -57,8 +58,9 @@ class R3BMvNeuLANDPlane : public R3BSegmentedRattlePlane {
 		//              containing the division specifications.
 		// -- name: a string to name the thing. "Nebuchadnezzar" is the default.
 		// -- active: a flag to switch on and off the detector.
-		R3BRattlePlane( rp_specs specs, sg_specs segments,
-		                const char *name, bool active = true ) {};
+		R3BSegmentedRattlePlane( rp_specs specs, sg_specs segments,
+		                         const char *name, bool active = true ):
+			R3BRattlePlane( specs, name, active ) {};
 		
 		virtual ~R3BSegmentedRattlePlane();
 		
@@ -78,8 +80,8 @@ class R3BMvNeuLANDPlane : public R3BSegmentedRattlePlane {
 		                                     const void *measures ) = 0;
 		virtual TGeoVolume *BuildPaddleVolume() = 0;
 	private:
-		R3BSegmentedRattlePlane( const R3BRattlePlane &given );
-		R3BSegmentedRattlePlane &operator=( R3BRattlePlane &right );
+		R3BSegmentedRattlePlane( const R3BSegmentedRattlePlane &given );
+		R3BSegmentedRattlePlane &operator=( R3BSegmentedRattlePlane &right );
 };
 
 #endif

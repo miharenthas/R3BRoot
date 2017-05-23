@@ -13,9 +13,6 @@
 #ifndef R3BMVNEULANDPLANE__H
 #define R3BMVNEULANDPLANE__H
 
-//define a constant for the detector ID
-#define MVNEULANDPLANE_DETECTOR_ID kMVNEULANDPLANE
-
 //define some geometry-related constants
 #define GPADDLESPERPLANE 50
 #define GPADDLEDISTANCE 2.5
@@ -37,11 +34,17 @@
 #include "TLorentzVector.h"
 #include "TGeoMatrix.h"
 #include "TGeoBBox.h"
+#include "TGeoCone.h"
+#include "TGeoShape.h"
+#include "TGeoCompositeShape.h"
 #include "TVirtualMC.h" //for gMC
 #include "TGeoManager.h" //for gGeoManager
+#include "TSystem.h" //for gSystem
 
 #include "FairLogger.h"
 #include "FairRootManager.h"
+#include "FairGeoMedia.h"
+#include "FairGeoBuilder.h"
 
 #include "R3BMCStack.h" //for R3BStack
 #include "R3BSegmentedRattlePlane.h" //The rattleplane, from which this
@@ -53,7 +56,7 @@
                                     //application. Still, should work.
 
 
-class R3BMvNeuLANDPlane : public R3BRattlePlane {
+class R3BMvNeuLANDPlane : public R3BSegmentedRattlePlane {
 	public:
 		//NOTE: the "handy structure" rp_specs
 		//      should be inherited as well
