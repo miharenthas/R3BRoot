@@ -16,6 +16,16 @@
 //define a constant for the detector ID
 #define MVNEULANDPLANE_DETECTOR_ID kMVNEULANDPLANE
 
+//define some geometry-related constants
+#define GPADDLESPERPLANE 50
+#define GPADDLEDISTANCE 2.5
+#define GPADDLEBASELENGTH 125.0
+#define GPADDLECONELENGTH 5.0
+#define GBC408CONERADIUS 1.2
+#define GBC408THICKNESS 2.4
+#define GALTHICKNESS 0.02
+#define GTAPETHICKNESS 0.05
+
 #include <string>
 
 //unique name generation
@@ -34,8 +44,8 @@
 #include "FairRootManager.h"
 
 #include "R3BMCStack.h" //for R3BStack
-#include "R3BRattlePlane.h" //The rattleplane, from which this
-                             //inherits
+#include "R3BSegmentedRattlePlane.h" //The rattleplane, from which this
+                                     //inherits
 #include "R3BRPHit.h" //will also produces rattles.
 #include "R3BNeulandPoint.h" //This should produce neuland points, at least.
 #include "R3BTargetAssemblyMedia.h" //This is here to provide materials, even
@@ -99,6 +109,12 @@ class R3BMvNeuLANDPlane : public R3BRattlePlane {
 			int paddle_id;
 			double light_yield, t_length;
 		} _nsi;
+		
+		//some geometry-related helper functions (lifted straight
+		//from the helper_neuland_geometry.C script)
+		virtual TGeoShape *BuildPaddleShape( const char *name,
+		                                     const void *measures );
+		virtual TGeoVolume *BuildPaddleVolume();
 		
 		//the rest of the data members are inherited.
 	private:
