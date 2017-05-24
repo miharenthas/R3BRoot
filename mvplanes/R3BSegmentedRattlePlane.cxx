@@ -13,10 +13,15 @@
 
 //------------------------------------------------------------------------------------
 //Get/make the material
-TGeoMedium *R3BSegmentedRattlePlane::BuildMaterial( const char *material,
-                                                    FairGeoMedia *geoMedia,
-                                                    FairGeoBuilder *geoBuild )
+TGeoMedium *R3BSegmentedRattlePlane::BuildMaterial( const char *material )
 {
+	FairGeoLoader *geoLoad = FairGeoLoader::Instance();
+	FairGeoInterface *geoFace = geoLoad->getGeoInterface();
+	geoFace->setMediaFile( TString( gSystem->Getenv("VMCWORKDIR") ) + "/geometry/media_r3b.geo");
+	geoFace->readMedia();
+	FairGeoBuilder *geoBuild = geoLoad->getGeoBuilder();
+	FairGeoMedia *geoMedia = geoFace->getMedia();
+
 	FairGeoMedium *fairMedium = geoMedia->getMedium( material );
 	if( !fairMedium ) {
 		std::cerr << "FairGeoMedium " << material << " not found" << std::endl;

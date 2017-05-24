@@ -22,6 +22,7 @@
 #include "TGeoBBox.h"
 #include "TVirtualMC.h" //for gMC
 #include "TGeoManager.h" //for gGeoManager
+#include "TSystem.h" //for gSystem
 
 #include "FairLogger.h"
 #include "FairRootManager.h"
@@ -60,7 +61,7 @@ class R3BSegmentedRattlePlane : public R3BRattlePlane {
 		// -- active: a flag to switch on and off the detector.
 		R3BSegmentedRattlePlane( rp_specs specs, sg_specs segments,
 		                         const char *name, bool active = true ):
-			R3BRattlePlane( specs, name, active ) {};
+			R3BRattlePlane( specs, name, active ) { _segments = segments; };
 		
 		virtual ~R3BSegmentedRattlePlane();
 		
@@ -68,14 +69,12 @@ class R3BSegmentedRattlePlane : public R3BRattlePlane {
 		
 		ClassDef( R3BSegmentedRattlePlane, 1 );
 	protected:
-		sg_specs _segment; //the info over the segment.
+		sg_specs _segments; //the info over the segment.
 	
 		//some geometry-related helper functions
 		//NOTE: this is the only bit I'm implementing right now,
 		//      just because it's 0-cost.
-		virtual TGeoMedium *BuildMaterial( const char *material,
-		                                   FairGeoMedia *geoMedia,
-		                                   FairGeoBuilder *geoBuild ); 
+		virtual TGeoMedium *BuildMaterial( const char *material ); 
 		virtual TGeoShape *BuildPaddleShape( const char *name,
 		                                     const void *measures ) = 0;
 		virtual TGeoVolume *BuildPaddleVolume() = 0;

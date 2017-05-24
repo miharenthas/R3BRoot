@@ -39,7 +39,6 @@
 #include "TGeoCompositeShape.h"
 #include "TVirtualMC.h" //for gMC
 #include "TGeoManager.h" //for gGeoManager
-#include "TSystem.h" //for gSystem
 
 #include "FairLogger.h"
 #include "FairRootManager.h"

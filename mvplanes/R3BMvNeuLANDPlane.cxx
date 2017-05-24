@@ -150,8 +150,6 @@ Bool_t R3BMvNeuLANDPlane::ProcessHits( FairVolume *fair_vol ){
 //Another big deal: the geometry constructor.
 //This is somewhat lited from the create_neuland_demo_geo.C script
 void R3BMvNeuLANDPlane::ConstructGeometry(){
-	FairGeoLoader *fgl = FairGeoLoader::Instance(); //retrieve the geoloader
-	
 	TGeoVolume *paddle = BuildPaddleVolume(); //make the volume (active bit already registered)
 	TGeoRotation *rot90 = new TGeoRotation();
 	rot90->RotateZ( 90 ); //make a 90 rotation.
@@ -243,17 +241,10 @@ TGeoShape *R3BMvNeuLANDPlane::BuildPaddleShape( const char *the_name,
 //------------------------------------------------------------------------------------
 //make the volume of the paddle:
 TGeoVolume *R3BMvNeuLANDPlane::BuildPaddleVolume(){
-	// Load Interfaces to build materials
-	FairGeoLoader *geoLoad = FairGeoLoader::Instance();
-	FairGeoInterface *geoFace = geoLoad->getGeoInterface();
-	geoFace->setMediaFile( TString( gSystem->Getenv("VMCWORKDIR") ) + "/geometry/media_r3b.geo");
-	geoFace->readMedia();
-	FairGeoBuilder *geoBuild = geoLoad->getGeoBuilder();
-	FairGeoMedia *geoMedia = geoFace->getMedia();
-
-	TGeoMedium *medBC408 = BuildMaterial( "BC408", geoMedia, geoBuild );
-	TGeoMedium *medCH2 = BuildMaterial( "CH2", geoMedia, geoBuild );
-	TGeoMedium *medAl = BuildMaterial( "aluminium", geoMedia, geoBuild );
+	//do the materials
+	TGeoMedium *medBC408 = BuildMaterial( "BC408" );
+	TGeoMedium *medCH2 = BuildMaterial( "CH2" );
+	TGeoMedium *medAl = BuildMaterial( "aluminium" );
 
 	// Prepare Transformations for cones
 	//NOTE: I don't actually know what's the ownership polocy here
@@ -279,7 +270,8 @@ TGeoVolume *R3BMvNeuLANDPlane::BuildPaddleVolume(){
 	trc2->RegisterYourself();
 
 	// Build shapes
-	//A preliminary structure
+	//A preliminary structure (there are probably better ways to do it
+	//but this is fast and agile)
 	struct { double length;
 	         double width;
 	         double coneRadius;
