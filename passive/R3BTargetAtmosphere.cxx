@@ -136,7 +136,7 @@ void R3BTargetAtmosphere::ConstructGeometry(){
 	TGeoVolume *pWorld = gGeoManager->GetTopVolume();
 	pWorld->SetVisLeaves( kTRUE );
 	
-	pWorld->AddNode( reaction_chLog, 1, GetGlobalPosition( tZero ) );
+	pWorld->AddNode( reaction_chLog, 1, tZero );
 }
 
 ClassImp( R3BTargetAtmosphere )
