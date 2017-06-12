@@ -10,15 +10,14 @@
 #pragma link C++ class R3BMCTrack+;
 
 #pragma link C++ class R3BXBallPoint+;
-#pragma link C++ class R3BCaloRawHit+;
 #pragma link C++ class R3BXBallCrystalHit+;
 #pragma link C++ class R3BXBallCrystalHitSim+;
-#pragma link C++ class R3BCaloCrystalHit+;
-#pragma link C++ class R3BCaloCrystalHitSim+;
-#pragma link C++ class R3BCaloRawHit+;
-#pragma link C++ class R3BCaloHit+;
-#pragma link C++ class R3BCaloHitSim+;
-#pragma link C++ class R3BCaloPoint+;
+#pragma link C++ class R3BCalifaMappedData+;
+#pragma link C++ class R3BCalifaCrystalCalData+;
+#pragma link C++ class R3BCalifaHitData+;
+#pragma link C++ class R3BCalifaPoint+;
+#pragma link C++ class R3BCalifaCrystalCalDataSim+;
+#pragma link C++ class R3BCalifaHitDataSim+;
 #pragma link C++ class R3BDchPoint+;
 #pragma link C++ class R3BDchFullPoint+;
 #pragma link C++ class R3BDchDigi+;
@@ -63,6 +62,7 @@
 #pragma link C++ class R3BNeulandCluster+;
 #pragma link C++ class R3BNeulandNeutron+;
 #pragma link C++ class R3BPspxMappedData+;
+#pragma link C++ class R3BPspxPrecalData+;
 #pragma link C++ class R3BPspxCalData+;
 #pragma link C++ class R3BPspxHitData+;
 #pragma link C++ class R3BLosMappedData+;
@@ -82,4 +82,3 @@
 
 
 #endif
-

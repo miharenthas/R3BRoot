@@ -8,7 +8,7 @@ set(SRCS
 	ReconstructionEngine.cxx
 	Reconstruction2DCalibr.cxx
 	ReconstructionEGate.cxx
-	ReconstructionNeuralNetworkMultiplicity.cxx
+	# ReconstructionNeuralNetworkMultiplicity.cxx
 )
 change_file_extension(*.cxx *.h HEADERS "${SRCS}")
 
@@ -27,7 +27,7 @@ set(DEPENDENCIES
 )
 
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wformat-security -pthread -march=native -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wformat-security -pthread -march=native -O3")
 
 
 set(SYSTEM_INCLUDE_DIRECTORIES

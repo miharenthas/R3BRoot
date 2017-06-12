@@ -135,8 +135,7 @@ void r3ball(Int_t nEvents = 1,
   //R3B Magnet definition
   if (fDetList->FindObject("GLAD") ) {
     fFieldMap = 1;
-    R3BModule* mag = new R3BGladMagnet("GladMagnet");
-    mag->SetGeometryFileName(((TObjString*)fDetList->GetValue("GLAD"))->GetString().Data());
+    R3BModule* mag = new R3BGladMagnet("GladMagnet", ((TObjString*)fDetList->GetValue("GLAD"))->GetString(), "GLAD Magnet");
     run->AddModule(mag);
   }
   
@@ -266,7 +265,6 @@ void r3ball(Int_t nEvents = 1,
     }
   } else if(fFieldMap == 1){
     magField = new R3BGladFieldMap("R3BGladMap");
-    ((R3BGladFieldMap*)magField)->SetPosition(0., 0., +350-119.94);
     ((R3BGladFieldMap*)magField)->SetScale(fieldScale);
     
     if ( fR3BMagnet == kTRUE ) {

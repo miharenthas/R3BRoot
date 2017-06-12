@@ -128,9 +128,6 @@ void eliall(Int_t nEvents,
       tx    =  0.0; // (cm)
       ty    =  0.0; // (cm)
       tz    =  0.0; // (cm)
-     //target->SetRotAnglesEuler(phi,theta,psi);
-     target->SetRotAnglesXYZ(thetaX,thetaY,thetaZ);
-     target->SetTranslation(tx,ty,tz);
       run->AddModule(target);
   }
 
@@ -151,12 +148,12 @@ void eliall(Int_t nEvents,
 
   if (fDetList.FindObject("CALIFA") ) {
     // CALIFA Calorimeter
-    R3BDetector* calo = new R3BCalo("Califa", kTRUE);
-    ((R3BCalo *)calo)->SelectGeometryVersion(10);
+    R3BDetector* califa = new R3BCalifa("Califa", kTRUE);
+    ((R3BCalifa *)califa)->SelectGeometryVersion(10);
     //Selecting the Non-uniformity of the crystals (1 means +-1% max deviation)
-    ((R3BCalo *)calo)->SetNonUniformity(1.0);
-    calo->SetGeometryFileName("califa_v13_811.geo.root");
-    run->AddModule(calo);
+    ((R3BCalifa *)califa)->SetNonUniformity(1.0);
+    califa->SetGeometryFileName("califa_v13_811.geo.root");
+    run->AddModule(califa);
   }
 
   // Tracker
@@ -174,9 +171,6 @@ void eliall(Int_t nEvents,
       tx    =  0.0; // (cm)
       ty    =  0.0; // (cm)
       tz    =  0.0; // (cm)
-      //tra->SetRotAnglesEuler(phi,theta,psi);
-      tra->SetRotAnglesXYZ(thetaX,thetaY,thetaZ);
-      tra->SetTranslation(tx,ty,tz);
       // User defined Energy CutOff
       Double_t fCutOffSi = 1.0e-06;  // Cut-Off -> 10KeV only in Si
       //((R3BTra*) tra)->SetEnergyCutOff(fCutOffSi);
@@ -198,9 +192,6 @@ void eliall(Int_t nEvents,
       tx    =  0.0; // (cm)
       ty    =  0.0; // (cm)
       tz    =  0.0; // (cm)
-     //dch->SetRotAnglesEuler(phi,theta,psi);
-      dch->SetRotAnglesXYZ(thetaX,thetaY,thetaZ);
-      dch->SetTranslation(tx,ty,tz);
       run->AddModule(dch);
   }
 
@@ -219,8 +210,6 @@ void eliall(Int_t nEvents,
       tx       =  0.0; // (cm)
       ty       =  0.0; // (cm)
       tz       =  0.0; // (cm)
-      tof->SetRotAnglesXYZ(thetaX,thetaY,thetaZ);
-      tof->SetTranslation(tx,ty,tz);
       // User defined Energy CutOff
       Double_t fCutOffSci = 1.0e-05;  // Cut-Off -> 10.KeV only in Sci.
       //((R3BTof*) tof)->SetEnergyCutOff(fCutOffSci);
@@ -242,9 +231,6 @@ void eliall(Int_t nEvents,
       tx    =  0.0; // (cm)
       ty    =  0.0; // (cm)
       tz    =  0.0; // (cm)
-      //mTof->SetRotAnglesEuler(phi,theta,psi);
-      mTof->SetRotAnglesXYZ(thetaX,thetaY,thetaZ);
-      mTof->SetTranslation(tx,ty,tz);
       // User defined Energy CutOff
       Double_t fCutOffSci = 1.0e-05;  // Cut-Off -> 10.KeV only in Sci.
       //((R3BmTof*) mTof)->SetEnergyCutOff(fCutOffSci);
@@ -266,8 +252,6 @@ void eliall(Int_t nEvents,
       tx    =  0.0; // (cm)
       ty    =  0.0; // (cm)
       tz    =  0.0; // (cm)
-      gfi->SetRotAnglesXYZ(thetaX,thetaY,thetaZ);
-      gfi->SetTranslation(tx,ty,tz);
       // User defined Energy CutOff
       Double_t fCutOffSci = 1.0e-05;  // Cut-Off -> 10.KeV only in Sci.
       //((R3BGfi*) gfi)->SetEnergyCutOff(fCutOffSci);
@@ -297,8 +281,6 @@ void eliall(Int_t nEvents,
       tx       =  0.0; // (cm)
       ty       =  0.0; // (cm)
       tz       =  0.0; // (cm)
-      chim->SetRotAnglesXYZ(thetaX,thetaY,thetaZ);
-      chim->SetTranslation(tx,ty,tz);
       // User defined Energy CutOff
       //Double_t fCutOffSci = 1.0e-05;  // Cut-Off -> 10.KeV only in Sci.
       //((R3BChimera*) chim)->SetEnergyCutOff(fCutOffSci);
