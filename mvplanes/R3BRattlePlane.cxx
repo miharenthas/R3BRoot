@@ -271,7 +271,7 @@ void R3BRattlePlane::ConstructGeometry(){
 	TGeoVolume *p_world = gGeoManager->GetTopVolume();
 	p_world->SetVisLeaves( kTRUE );
 
-	p_world->AddNode( rp_volume, 1, GetGlobalPosition( reference_trf ) );
+	p_world->AddNode( rp_volume, 1, reference_trf );
 }
 
 

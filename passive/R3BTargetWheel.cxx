@@ -221,7 +221,7 @@ void R3BTargetWheel::ConstructGeometry(){
 	}
 	pChamber->SetVisLeaves( kTRUE );
 	
-	pChamber->AddNode( tw_assembly, 1, GetGlobalPosition( tZero ) );
+	pChamber->AddNode( tw_assembly, 1, tZero );
 }
 
 ClassImp( R3BTargetWheel )

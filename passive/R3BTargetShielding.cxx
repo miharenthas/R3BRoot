@@ -207,7 +207,7 @@ void R3BTargetShielding::ConstructGeometry(){
 	}
 	pChamber->SetVisLeaves( kTRUE );
 	
-	pChamber->AddNode( target_shielding, 1, GetGlobalPosition( tZero ) );
+	pChamber->AddNode( target_shielding, 1, tZero );
 
 }
 
