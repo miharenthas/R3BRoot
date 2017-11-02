@@ -50,6 +50,5 @@ void SetCuts()
   gMC->SetCut( "DCUTM", 1.*_KeV );    /** delta-rays by muons (GeV)*/
   gMC->SetCut( "PPCUTM", 1.*_KeV );   /** direct pair production by muons (GeV)*/
   gMC->SetCut( "TOFMAX", tofmax ); /**time of flight cut in seconds*/
-  
    
 }
