@@ -78,7 +78,6 @@ void r3bsim()
   //   Neutron:                 LAND
   //                            SCINTNEULAND
   TMap detGeo;
-
   detGeo.Add(new TObjString("TARGET"),        new TObjString("target_"+target4+".geo.root"));
 //  detGeo.Add(new TObjString("ALADIN"),        new TObjString("aladin_v13a.geo.root"));
 //  detGeo.Add(new TObjString("GLAD"),          new TObjString("glad_v17_flange.geo.root"));
@@ -113,6 +112,6 @@ void r3bsim()
 
   // Main Sim function call
   r3ball(nEvents, &detGeo, target4, fEventDisplay, fMC, fGene, fUserPList,
-         fR3BMagnet, 1500.,
-         OutFile, ParFile, "amev0300.dat" );
+         fR3BMagnet, 2500.,
+         OutFile, ParFile, "", 335566);
 }
