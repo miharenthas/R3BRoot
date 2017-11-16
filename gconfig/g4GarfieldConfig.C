@@ -19,13 +19,13 @@ void Config()
 /// called during MC application initialization. 
 /// For geometry defined with Root and Geant4 native navigation
 
-  // cout << "Constructing Garfield::RunConfiguration " << endl;
+  // /*cout << "Constructing Garfield::RunConfiguration " << endl;*/
 
   // Run configuration
   VMC::Garfield::RunConfiguration* runConfiguration 
       = new VMC::Garfield::RunConfiguration("geomRoot", "FTFP_BERT");
   
-  cout << "Constructing TG4RunConfiguration " << endl;
+  /*cout << "Constructing TG4RunConfiguration " << endl;*/
 
   // Run configuration with special cuts activated
   // VMC::Garfield::RunConfiguration* runConfiguration 
@@ -35,7 +35,7 @@ void Config()
   TGeant4* geant4
     = new TGeant4("TGeant4", "The Geant4 Monte Carlo", runConfiguration);
 
-  cout << "Geant4 has been created." << endl;
+  /*cout << "Geant4 has been created." << endl;*/
   
   // Customise Geant4 setting
   // Fast simulation model configuration
@@ -60,13 +60,13 @@ void Config()
 
    TString configm(gSystem->Getenv("VMCWORKDIR"));
    configm1 = configm + "/gconfig/g4garfieldconfig.in";
-   cout << " -I g4GarfieldConfig() using g4garfieldconf  macro: " << configm1 << endl;
+   /*cout << " -I g4GarfieldConfig() using g4garfieldconf  macro: " << configm1 << endl;*/
 
    //set geant4 specific stuff
   geant4->SetMaxNStep(10000);  // default is 30000
   geant4->ProcessGeantMacro(configm1.Data());
 
 
-  cout << "Processing Config() done." << endl;
+  /*cout << "Processing Config() done." << endl;*/
 }
 

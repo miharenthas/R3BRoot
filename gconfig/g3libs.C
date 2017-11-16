@@ -10,7 +10,7 @@ Bool_t isLibrary(const char* libName)
 
 void g3libs()
 {
-  cout << "Loading Geant3 libraries ..." << endl;
+  /*cout << "Loading Geant3 libraries ..." << endl;*/
 
   if (isLibrary("libdummies.so"))
      gSystem->Load("libdummies.so");
@@ -18,5 +18,5 @@ void g3libs()
 
   gSystem->Load("libgeant321.so");
 
-  cout << "Loading Geant3 libraries ... finished" << endl;
+  /*cout << "Loading Geant3 libraries ... finished" << endl;*/
 }

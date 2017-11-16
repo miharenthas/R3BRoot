@@ -5,8 +5,8 @@ void Config()
 {
  
   gMC3= new  TGeant3TGeo("C++ Interface to Geant3");
-  cout << "-I- G3Config: Geant3 with TGeo has been created for Geane."
-       << endl;
+  /*cout << "-I- G3Config: Geant3 with TGeo has been created for Geane."
+       << endl;*/
   // create Fair Specific Stack
   FairStack *st = new FairStack(10);
   gMC3->SetStack( st ) ;
@@ -51,11 +51,11 @@ void Config()
   Float_t gcalpha = 0.999;                            // Optimal value for alpha 
 
 
-  cout<<"Energy straggling area parameter from user set to: "<<gcalpha<<endl;
+  /*cout<<"Energy straggling area parameter from user set to: "<<gcalpha<<endl;*/
   if(gcalpha<0.9) 
     {
       gcalpha=0.9;
-      cout<<"User alpha parameter too low: forced to 0.9"<<endl;
+      /*cout<<"User alpha parameter too low: forced to 0.9"<<endl;*/
     }
     
   // set cuts here 

@@ -2,11 +2,11 @@
 void Config()
 {
    // Load the User Defined Physics List
-   cout << "-I- R3B Config(): Loading G4 User Defined Physics List " << endl;
+   /*cout << "-I- R3B Config(): Loading G4 User Defined Physics List " << endl;*/
 
    gSystem->Load("libR3BPlist");
 
-    cout<<endl;
+    /*cout<<endl;*/
 
     ///    Create the run configuration
    /// In constructor user has to specify the geometry input
@@ -31,8 +31,8 @@ void Config()
 /// Create the G4 VMC 
    TGeant4* geant4 = new TGeant4("TGeant4", "The Geant4 Monte Carlo",
 				 runConfiguration);
-   cout << "-I- R3B Config(): Geant4 with R3B dedicated Physics list " << endl;
-   cout << "-I- R3B Config(): has been created..." << endl;
+   /*cout << "-I- R3B Config(): Geant4 with R3B dedicated Physics list " << endl;*/
+   /*cout << "-I- R3B Config(): has been created..." << endl;*/
 
 
   // Create Geant4 VMC
@@ -72,7 +72,7 @@ void Config()
 
    TString configm(gSystem->Getenv("VMCWORKDIR"));
    configm1 = configm + "/gconfig/g4r3bconfig.in";
-   cout << " -I g4Config() using g4conf  macro: " << configm1 << endl;
+   /*cout << " -I g4Config() using g4conf  macro: " << configm1 << endl;*/
 
    //set geant4 specific stuff
   geant4->SetMaxNStep(10000);  // default is 30000

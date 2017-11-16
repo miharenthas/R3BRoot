@@ -10,13 +10,13 @@ void Config()
   if ( strncmp(gModel->Data(),"TGeo",4) == 0 ) {
 	geant3
 	  = new  TGeant3TGeo("C++ Interface to Geant3");
-	cout << "-I- G3Config: Geant3 with TGeo has been created."
-		 << endl;
+	/*cout << "-I- G3Config: Geant3 with TGeo has been created."
+		 << endl;*/
   }else{
 	geant3
 	  = new  TGeant3("C++ Interface to Geant3");
-	cout << "-I- G3Config: Geant3 native has been created."
-		 << endl;
+	/*cout << "-I- G3Config: Geant3 native has been created."
+		 << endl;*/
   }
   // create R3B  Specific Stack
   R3BStack *st = new R3BStack();
@@ -48,7 +48,7 @@ void Config()
   // set common stuff 
   TString configm(gSystem->Getenv("VMCWORKDIR"));
   TString cuts = configm + "/gconfig/SetCuts.C";
-  cout << "Physics cuts with script \n "<<  cuts.Data() << endl;
+  /*cout << "Physics cuts with script \n "<<  cuts.Data() << endl;*/
   Int_t cut=gROOT->LoadMacro(cuts.Data());
   if(cut==0)gInterpreter->ProcessLine("SetCuts()"); 
 }

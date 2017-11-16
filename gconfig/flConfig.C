@@ -5,7 +5,7 @@ void Config()
 
     new  TFluka("C++ Interface to Fluka", 1/*verbositylevel*/);
 
-    cout << "GConfig: TFluka has been created." << endl;
+    /*cout << "GConfig: TFluka has been created." << endl;*/
   
     FairStack *st = new FairStack();
     st->SetMinPoints(0);
@@ -22,7 +22,7 @@ void Config()
    // set the common cuts 
     TString configm(gSystem->Getenv("VMCWORKDIR"));
     TString cuts = configm + "/gconfig/SetCuts.C";
-    cout << "Physics cuts with script \n "<<  cuts.Data() << endl;
+    /*cout << "Physics cuts with script \n "<<  cuts.Data() << endl;*/
     Int_t cut=gROOT->LoadMacro(cuts.Data());
     if(cut==0)gInterpreter->ProcessLine("SetCuts()"); 
 }
