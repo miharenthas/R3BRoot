@@ -23,7 +23,7 @@ enum DetectorId
     kMFI,
     kPSP,
     kVETO,
-    kSTaRTrack,
+    kSTARTRACK,
     kLUMON,
     kNEULAND,
     kACTAR,
@@ -49,7 +49,7 @@ enum fDetectorType
     kMfiPoint,
     kPspPoint,
     kVetoPoint,
-    kSTarTraPoint,
+    kStartrackPoint,
     kLuMonPoint,
     kNeulandPoint
 };

@@ -22,16 +22,11 @@ void run_digi()
     R3BTof2pDigitizer* tof_digitizer = new R3BTof2pDigitizer();
     run->AddTask(tof_digitizer);
 
-    // mTOF
-    R3BmTofDigitizer* mtof_digitizer = new R3BmTofDigitizer();
-    run->AddTask(mtof_digitizer);
-    
-    // DCH
-    R3BDch2pDigitizer* dch_digitizer = new R3BDch2pDigitizer();
-    run->AddTask(dch_digitizer);
-    
-    // Tracker
-    R3BTra2pDigitizer* tra_digitizer = new R3BTra2pDigitizer();
+    // STaRTrack
+
+    //R3BStartrackHitFinder* tra_digitizer = new R3BStartrackHitFinder();  // R3BStartrackHitFinder() is obsolete
+    R3BStartrackDigit* tra_digitizer = new R3BStartrackDigit();
+
     run->AddTask(tra_digitizer);
     
     // GFI

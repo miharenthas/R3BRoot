@@ -78,7 +78,8 @@ void run_sim()
     run->AddModule(new R3BVacVesselCool(targetType.Data(), "vacvessel_v14a.geo.root", 0., 0., 0.));
 
     // STaRTrack
-    run->AddModule(new R3BSTaRTra("STaRTrack", "startra_v16-300_2layers.geo.root", kTRUE, 0., 0., 20.));
+    run->AddModule(new R3BStartrack("startrack_v16-300_2layers.geo.root", { 0., 0., 20. }));
+    //run->AddModule(new R3BSTaRTra("startra_v16-300_2layers.geo.root", { 0., 0., 20. }));
 
     // CALIFA
     R3BCalifa* califa = new R3BCalifa("Califa", "califa_10_v8.11.geo.root", kTRUE, 0., 0., 0.);

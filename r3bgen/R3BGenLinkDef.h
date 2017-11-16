@@ -22,5 +22,6 @@
 #pragma link C++ class  R3BAsciiUrQMDGen+;
 #pragma link C++ class  R3BIonGenerator+;
 #pragma link C++ class  R3BGammaGenerator+;
+#pragma link C++ class  R3BPhaseSpaceGenerator+;
 
 #endif
