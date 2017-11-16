@@ -33,6 +33,13 @@ using namespace std;
 #include "R3BStartrackMappedData.h"
 #include "R3BStartrackCalData.h"
 
+/********LINK-ability correction*********
+//Author: Lorenzo Zanetti, IKP - TU Darmstadt
+//Date: 16.11.2017
+//Comment: The default constructor is
+//         declared, but not implemented
+****************************************/
+R3BStartrackMapped2Cal::R3BStartrackMapped2Cal(){}
 
 R3BStartrackMapped2Cal::R3BStartrackMapped2Cal(const char* name, Int_t iVerbose)
     : FairTask(name, iVerbose)
