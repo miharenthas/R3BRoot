@@ -20,31 +20,11 @@ SET_TESTS_PROPERTIES(r3bsim_g4 PROPERTIES PASS_REGULAR_EXPRESSION "TestPassed;Al
 
 
 GENERATE_ROOT_TEST_SCRIPT(${R3BROOT_SOURCE_DIR}/macros/r3b/r3bsim_new.C)
-add_test(r3bsim_new ${R3BROOT_BINARY_DIR}/macros/r3b/r3bsim_new.sh)
-SET_TESTS_PROPERTIES(r3bsim_new PROPERTIES TIMEOUT "300")
-SET_TESTS_PROPERTIES(r3bsim_new PROPERTIES PASS_REGULAR_EXPRESSION "TestPassed;All ok")
-
-
-GENERATE_ROOT_TEST_SCRIPT(${R3BROOT_SOURCE_DIR}/macros/r3b/test/testR3BPhaseSpaceGeneratorIntegration.C)
-add_test(testR3BPhaseSpaceGeneratorIntegration ${R3BROOT_BINARY_DIR}/macros/r3b/test/testR3BPhaseSpaceGeneratorIntegration.sh)
-SET_TESTS_PROPERTIES(testR3BPhaseSpaceGeneratorIntegration PROPERTIES TIMEOUT "100")
-SET_TESTS_PROPERTIES(testR3BPhaseSpaceGeneratorIntegration PROPERTIES PASS_REGULAR_EXPRESSION "TestPassed;All ok")
-
-
-GENERATE_ROOT_TEST_SCRIPT(${R3BROOT_SOURCE_DIR}/macros/r3b/run_sim.C)
-GENERATE_ROOT_TEST_SCRIPT(${R3BROOT_SOURCE_DIR}/macros/r3b/run_digi.C)
-#configure_file(${R3BROOT_SOURCE_DIR}/macros/r3b/run_digi_test.sh.in ${R3BROOT_BINARY_DIR}/macros/r3b/run_digi_test.sh)
-#add_test(run_digi ${R3BROOT_BINARY_DIR}/macros/r3b/run_digi_test.sh)
-#SET_TESTS_PROPERTIES(run_digi PROPERTIES TIMEOUT "300")
-#SET_TESTS_PROPERTIES(run_digi PROPERTIES PASS_REGULAR_EXPRESSION "Digitization successful")
-
-
-GENERATE_ROOT_TEST_SCRIPT(${R3BROOT_SOURCE_DIR}/macros/r3b/run_aladin_sim.C)
-GENERATE_ROOT_TEST_SCRIPT(${R3BROOT_SOURCE_DIR}/macros/r3b/run_aladin_digi.C)
-#configure_file(${R3BROOT_SOURCE_DIR}/macros/r3b/run_aladin_digi_test.sh.in ${R3BROOT_BINARY_DIR}/macros/r3b/run_aladin_digi_test.sh)
-#add_test(run_aladin_digi ${R3BROOT_BINARY_DIR}/macros/r3b/run_aladin_digi_test.sh)
-#SET_TESTS_PROPERTIES(run_aladin_digi PROPERTIES TIMEOUT "300")
-#SET_TESTS_PROPERTIES(run_aladin_digi PROPERTIES PASS_REGULAR_EXPRESSION "Digitization successful")
+GENERATE_ROOT_TEST_SCRIPT(${R3BROOT_SOURCE_DIR}/macros/r3b/run_digi_new.C)
+configure_file(${R3BROOT_SOURCE_DIR}/macros/r3b/run_test_new.sh.in ${R3BROOT_BINARY_DIR}/macros/r3b/run_test_new.sh)
+add_test(r3bsim_new ${R3BROOT_BINARY_DIR}/macros/r3b/run_test_new.sh)
+SET_TESTS_PROPERTIES(r3bsim_new PROPERTIES TIMEOUT "100")
+SET_TESTS_PROPERTIES(r3bsim_new PROPERTIES PASS_REGULAR_EXPRESSION "Digitization successful")
 
 
 add_subdirectory(califa)
