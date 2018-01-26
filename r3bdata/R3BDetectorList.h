@@ -10,6 +10,8 @@
 
 enum DetectorId
 {
+    kRATTLEPLANE,
+    kSTOPPERPLANE,
     kREF,
     kDCH,
     kCAL,
