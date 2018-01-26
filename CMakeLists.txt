@@ -6,7 +6,7 @@
 # and PANDAROOT.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.8.2 FATAL_ERROR)
 
 ### CMP0025   Compiler id for Apple Clang is now AppleClang.
 ### CMP0042   MACOSX_RPATH is enabled by default.
@@ -63,18 +63,13 @@ EndIf(NOT FAIRROOT_ROOT)
 # Up to now this is only a check since the code does not use
 # any of the features of the new standard
 
-IF(FAIRROOTPATH)
-  Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
-ELSE(FAIRROOTPATH)
-  Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
-ENDIF(FAIRROOTPATH)
-
-if(FAIRROOTPATH)
-  find_package(FairRoot REQUIRED)
-endif(FAIRROOTPATH)
+Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
+find_package(FairRoot REQUIRED)
 
 include(CheckCXX14Features)
-
+if( NOT _HAS_CXX14_FLAG )
+	include(CheckCXX11Features)
+endif()
 
 # Load some basic macros which are needed later on
 include(FairMacros)
@@ -88,15 +83,18 @@ include(WriteEnvCache)
 # R3BRoot uses from 30.11.17 C++14, so we need an compiler which supports C++14
 # Check if the used compiler support C++14. If not stop with an error message
 # Check also if FairSoft and FairRoot have been compiled with C++14 support
-If(NOT _HAS_CXX14_FLAG)
-  Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++14. R3BRoot can only be compiled with compilers supporting C++14. Please install such an compiler.")
+
+if(NOT( _HAS_CXX14_FLAG OR _HAS_CXX11_FLAG ) )
+  Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++11/14. R3BRoot can only be compiled with compilers supporting at least C++11. Please install such an compiler.")
 EndIf()
 
 If(NOT FAIRROOT_ROOT)
+  Check_Compiler()
   Execute_process(COMMAND $ENV{SIMPATH}/bin/fairsoft-config --cxxflags OUTPUT_VARIABLE _res_fairsoft_config OUTPUT_STRIP_TRAILING_WHITESPACE)
-  String(FIND ${_res_fairsoft_config} "-std=c++14" POS_C++14)
-  If(${POS_C++14} EQUAL "-1" )
-    Message(FATAL_ERROR "FairSoft wasn't compiled with c++14 support. Please recompile FairSoft with a compiler which supports c++14.")
+  String(FIND "${CMAKE_CXX_FLAGS}" "-std=c++14" POS_C++14)
+  String(FIND "${CMAKE_CXX_FLAGS}" "-std=c++11" POS_C++11)
+  If(${POS_C++14} EQUAL -1 AND ${POS_C++11} EQUAL -1 )
+    Message(FATAL_ERROR "FairSoft wasn't compiled with c++14 support. Please recompile FairSoft with a compiler which supports c++11/14.")
   EndIf()
 
   Execute_process(COMMAND $ENV{FAIRROOTPATH}/bin/fairroot-config --fairsoft_path OUTPUT_VARIABLE _simpath OUTPUT_STRIP_TRAILING_WHITESPACE)
