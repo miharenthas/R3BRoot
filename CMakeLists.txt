@@ -73,7 +73,7 @@ if(FAIRROOTPATH)
   find_package(FairRoot REQUIRED)
 endif(FAIRROOTPATH)
 
-include(CheckCXX11Features)
+include(CheckCXX14Features)
 
 
 # Load some basic macros which are needed later on
@@ -85,19 +85,18 @@ include(CheckCompiler)
 include(WriteEnvCache)
 
 
-# R3BRoot uses from 10.08.15 C++11, so we need an compiler which supports C++11
-# Check if the used compiler support C++11. If not stop with an error message
-# Check also if FairSoft and FairRoot have been compiled with C++11 support
-If(NOT _HAS_CXX11_FLAG)
-  Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++11. R3BRoot can only be compiled with compilers supporting C++11. Please install such an compiler.")
+# R3BRoot uses from 30.11.17 C++14, so we need an compiler which supports C++14
+# Check if the used compiler support C++14. If not stop with an error message
+# Check also if FairSoft and FairRoot have been compiled with C++14 support
+If(NOT _HAS_CXX14_FLAG)
+  Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++14. R3BRoot can only be compiled with compilers supporting C++14. Please install such an compiler.")
 EndIf()
 
 If(NOT FAIRROOT_ROOT)
   Execute_process(COMMAND $ENV{SIMPATH}/bin/fairsoft-config --cxxflags OUTPUT_VARIABLE _res_fairsoft_config OUTPUT_STRIP_TRAILING_WHITESPACE)
-  String(FIND ${_res_fairsoft_config} "-std=c++11" POS_C++11)
-  String(FIND ${_res_fairsoft_config} "-std=c++1y" POS_C++1y)
-  If(${POS_C++11} EQUAL -1 AND ${POS_C++1y} EQUAL -1)
-    Message(FATAL_ERROR "FairSoft wasn't compiled with c++11 or c++1y support. Please recompile FairSoft with a compiler which supports c++11 or c++1y.")
+  String(FIND ${_res_fairsoft_config} "-std=c++14" POS_C++14)
+  If(${POS_C++14} EQUAL "-1" )
+    Message(FATAL_ERROR "FairSoft wasn't compiled with c++14 support. Please recompile FairSoft with a compiler which supports c++14.")
   EndIf()
 
   Execute_process(COMMAND $ENV{FAIRROOTPATH}/bin/fairroot-config --fairsoft_path OUTPUT_VARIABLE _simpath OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -163,20 +162,20 @@ EndIf(NOT FAIRROOT_ROOT)
 # directory
 CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 
+if( NOT USE_SHARED_LIBRARIES )
+	If(NOT FAIRROOT_ROOT)
+	  If(FAIRSOFT_EXTERN)
+	    set(BOOST_ROOT ${SIMPATH})
+	    set(GSL_DIR ${SIMPATH})
+	  Else(FAIRSOFT_EXTERN)
+	    set(BOOST_ROOT ${SIMPATH}/basics/boost)
+	    set(GSL_DIR ${SIMPATH}/basics/gsl)
+	  EndIf(FAIRSOFT_EXTERN)
+	EndIf(NOT FAIRROOT_ROOT)
+	Set(Boost_NO_SYSTEM_PATHS TRUE)
+	Set(Boost_NO_BOOST_CMAKE TRUE)
+endif()
 
-If(NOT FAIRROOT_ROOT)
-  If(FAIRSOFT_EXTERN)
-    set(BOOST_ROOT ${SIMPATH})
-    set(GSL_DIR ${SIMPATH})
-  Else(FAIRSOFT_EXTERN)
-    set(BOOST_ROOT ${SIMPATH}/basics/boost)
-    set(GSL_DIR ${SIMPATH}/basics/gsl)
-  EndIf(FAIRSOFT_EXTERN)
-EndIf(NOT FAIRROOT_ROOT)
-
-
-Set(Boost_NO_SYSTEM_PATHS TRUE)
-Set(Boost_NO_BOOST_CMAKE TRUE)
 Message("-- Looking for Boost ...")
 # If an older version of boost is found both of the variables below are
 # cached and in a second cmake run, a good boost version is found even
