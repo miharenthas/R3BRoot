@@ -71,7 +71,6 @@ if( NOT _HAS_CXX14_FLAG )
 	include(CheckCXX11Features)
 endif()
 
-
 # Load some basic macros which are needed later on
 include(FairMacros)
 include(R3BMacros)
@@ -84,6 +83,7 @@ include(WriteEnvCache)
 # R3BRoot uses from 30.11.17 C++14, so we need an compiler which supports C++14
 # Check if the used compiler support C++14. If not stop with an error message
 # Check also if FairSoft and FairRoot have been compiled with C++14 support
+
 if(NOT( _HAS_CXX14_FLAG OR _HAS_CXX11_FLAG ) )
   Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++11/14. R3BRoot can only be compiled with compilers supporting at least C++11. Please install such an compiler.")
 EndIf()
