@@ -9,6 +9,7 @@
 #define R3BPSPXCAL2HIT_H
 
 #include "FairTask.h"
+#include <math.h>
 
 class TClonesArray;
 class R3BEventHeader;
